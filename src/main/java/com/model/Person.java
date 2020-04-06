@@ -1,8 +1,6 @@
 package com.model;
 
-import com.exeptions.IncorrectAmountException;
-import com.exeptions.NoSuchCurrencyException;
-import com.exeptions.NotEnoughMoneyException;
+import com.exceptions.NotEnoughMoneyException;
 
 public class Person {
     private String name;
@@ -13,33 +11,27 @@ public class Person {
         wallet = new Wallet();
         this.name = name;
         this.surname = surname;
-
     }
 
     public void pay(Person person, Money money) {
         try {
             wallet.takeOut(money);
-            person.takeIn(money);
-        } catch (NoSuchCurrencyException e) {
-            System.out.printf("\nYour wallet doesn't contains %s currency.\n",
-                    money.getCurrency());
+            person.receiveMoney(money);
         } catch (NotEnoughMoneyException ex) {
             System.out.println("\nYou haven't got enough money to complete transaction.");
-        } catch (IncorrectAmountException e) {
-            System.out.println("Amount cannot be negative value.");
         }
     }
 
-    public void takeIn(Money money) {
-        try {
+    public void receiveMoney(Money money) {
             wallet.putIn(money);
-        } catch (IncorrectAmountException e) {
-            System.out.println("Amount cannot be negative value.");
-        }
+    }
+
+    public Wallet getWallet() {
+        return wallet;
     }
 
     @Override
     public String toString() {
-        return String.format("%s %s\nWallet: ", name, surname) + wallet.printWallet();
+        return String.format("Person: %s %s.\nWallet:\n", name, surname) + wallet.printWallet();
     }
 }

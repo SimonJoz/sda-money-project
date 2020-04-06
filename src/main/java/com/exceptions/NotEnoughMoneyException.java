@@ -1,4 +1,4 @@
-package com.exeptions;
+package com.exceptions;
 
 public class NotEnoughMoneyException extends RuntimeException {
 }

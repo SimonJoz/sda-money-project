@@ -1,5 +1,8 @@
 package com.model;
 
+import com.exceptions.IncorrectAmountException;
+import com.exceptions.NotEnoughMoneyException;
+
 import java.math.BigDecimal;
 
 public class Money {
@@ -9,16 +12,20 @@ public class Money {
     public Money(BigDecimal value, Currency currency) {
         this.amount = value;
         this.currency = currency;
+        if (value.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IncorrectAmountException("Amount cannot be negative value.");
+        }
     }
 
-    public Money moneyIn(Money money) {
+    public void moneyIn(Money money) {
         amount = amount.add(money.amount);
-        return new Money(amount, money.currency);
     }
 
-    public Money moneyOut(Money money) {
+    public void moneyOut(Money money) {
+        if (amount.compareTo(money.amount) < 0) {
+            throw new NotEnoughMoneyException();
+        }
         amount = amount.subtract(money.amount);
-        return new Money(amount, money.currency);
     }
 
     public BigDecimal getAmount() {
@@ -33,5 +40,6 @@ public class Money {
     public String toString() {
         return String.format("%s %.2f", currency, amount);
     }
+
 }
 
