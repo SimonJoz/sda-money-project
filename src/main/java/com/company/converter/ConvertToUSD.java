@@ -4,30 +4,18 @@ import com.company.model.Currency;
 import com.company.model.Money;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class ConvertToUSD implements Converter {
-    private static final BigDecimal EUR_TO_USD = BigDecimal.valueOf(1.08);
-    private static final BigDecimal PLN_TO_USD = BigDecimal.valueOf(0.24);
-    private static final BigDecimal GBP_TO_USD = BigDecimal.valueOf(1.23);
+    private Map<Currency, BigDecimal> exchangeRates = Map.of(
+            Currency.USD, BigDecimal.ONE,
+            Currency.EUR, BigDecimal.valueOf(1.08),
+            Currency.PLN, BigDecimal.valueOf(0.24),
+            Currency.GBP, BigDecimal.valueOf(1.23));
 
     @Override
     public Money convert(Money money) {
-        Currency currency = money.getCurrency();
-        BigDecimal amount = money.getAmount();
-        BigDecimal result = BigDecimal.ZERO;
-        switch (currency){
-            case USD:
-                return money;
-            case PLN:
-                result = amount.multiply(PLN_TO_USD);
-                break;
-            case EUR:
-                result = amount.multiply(EUR_TO_USD);
-                break;
-            case GBP:
-                result = amount.multiply(GBP_TO_USD);
-                break;
-        }
-        return new Money(result, Currency.USD);
+        BigDecimal rate = exchangeRates.get(money.getCurrency());
+        return new Money(money.getAmount().multiply(rate), Currency.USD);
     }
 }

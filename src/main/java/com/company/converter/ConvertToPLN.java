@@ -4,31 +4,20 @@ import com.company.model.Currency;
 import com.company.model.Money;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class ConvertToPLN implements Converter {
-    private static final BigDecimal EUR_TO_PLN = BigDecimal.valueOf(4.54);
-    private static final BigDecimal USD_TO_PLN = BigDecimal.valueOf(4.22);
-    private static final BigDecimal GBP_TO_PLN = BigDecimal.valueOf(5.21);
+    private Map<Currency, BigDecimal> exchangeRates = Map.of(
+            Currency.PLN, BigDecimal.ONE,
+            Currency.USD, BigDecimal.valueOf(4.22),
+            Currency.EUR, BigDecimal.valueOf(4.54),
+            Currency.GBP, BigDecimal.valueOf(5.21));
 
     @Override
-    public Money convert(Money money){
-        Currency currency = money.getCurrency();
-        BigDecimal amount = money.getAmount();
-        BigDecimal result = BigDecimal.ZERO;
-        switch (currency){
-            case PLN:
-                return money;
-            case USD:
-               result = amount.multiply(USD_TO_PLN);
-                break;
-            case EUR:
-                result = amount.multiply(EUR_TO_PLN);
-                break;
-            case GBP:
-                result = amount.multiply(GBP_TO_PLN);
-                break;
-
-        }
-        return new Money(result, Currency.PLN);
+    public Money convert(Money money) {
+        BigDecimal rate = exchangeRates.get(money.getCurrency());
+        return new Money(money.getAmount().multiply(rate), Currency.PLN);
     }
+
+
 }

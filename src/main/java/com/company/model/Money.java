@@ -1,16 +1,14 @@
 package com.company.model;
 
-import com.company.converter.CurrencyExchange;
 import com.company.exceptions.IncorrectAmountException;
 import com.company.exceptions.NotEnoughMoneyException;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Money {
+public class Money implements Comparable<Money> {
     private BigDecimal amount;
     private Currency currency;
-    private CurrencyExchange currencyExchange = new CurrencyExchange();
 
     public Money(BigDecimal value, Currency currency) {
         this.amount = value;
@@ -24,10 +22,6 @@ public class Money {
 
     public Money(long amount, Currency currency) {
         this(BigDecimal.valueOf(amount), currency);
-    }
-
-    public Money changeMoney(Currency currency) {
-        return currencyExchange.changeMoney(currency, new Money(amount, this.currency));
     }
 
     public void moneyIn(Money money) {
@@ -50,6 +44,17 @@ public class Money {
     @Override
     public String toString() {
         return String.format("%s: %.2f", currency, amount);
+    }
+
+    @Override
+    public int compareTo(Money money) {
+        if ((amount.compareTo(money.amount) > 0 && currency.equals(money.currency))) {
+            return 1;
+        }
+        if ((amount.compareTo(money.amount) == 0 && currency.equals(money.currency))) {
+            return 0;
+        }
+        return -1;
     }
 
     @Override

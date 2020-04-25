@@ -1,8 +1,11 @@
 package com.company.model;
 
+import com.company.converter.CurrencyExchange;
+import com.company.matchOfferStrategies.MatcherType;
 import com.company.exceptions.IncorrectPaymentException;
 import com.company.exceptions.InvalidTransactionException;
 import com.company.exceptions.NotEnoughMoneyException;
+import com.company.matchOfferStrategies.OfferMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,8 @@ public class Person {
     private List<String> myItems;
     private List<Offer> itemsForSale;
     private List<Offer> itemsToBuy;
-
+    private List<Person> people = new ArrayList<>();
+    private CurrencyExchange cantor = new CurrencyExchange();
 
     public Person(String name, String surname) {
         wallet = new Wallet();
@@ -36,17 +40,18 @@ public class Person {
         }
     }
 
-    public void buy(Person seller, String reqItem, Currency currency) {
+    public void buy(Person seller, String reqItem, Currency currency, MatcherType type) {
         Offer buyerOffer = getOffer(itemsToBuy, reqItem);
         Offer sellerOffer = getOffer(seller.itemsForSale, reqItem);
+        OfferMatcher matcher = new OfferMatcher();
         try {
-            Money matchingPrice = buyerOffer.getCheapestMatchingOffer(sellerOffer);
+            Money matchingPrice = matcher.getMatchingOffer(buyerOffer, sellerOffer, type);
             pay(seller, currency, matchingPrice);
             seller.confirmPayment(matchingPrice);
             updateBuyerLists(buyerOffer);
             updateSellerLists(seller, sellerOffer, matchingPrice);
         } catch (InvalidTransactionException e) {
-            System.err.println(format("\nSeller haven't got \"%s\" in his offer or your max price is to low.", reqItem));
+            System.err.println(format("\nNo match found for: \"%s\"", reqItem));
         } catch (NotEnoughMoneyException e) {
             System.err.println("\nTransaction failed.. Not enough money.");
         } catch (IncorrectPaymentException e) {
@@ -71,19 +76,15 @@ public class Person {
     }
 
     private void pay(Person seller, Currency currency, Money money) throws NotEnoughMoneyException {
-        Money exchanged = money.changeMoney(currency);
+        Money exchanged = cantor.changeMoney(currency,money);
         wallet.takeOut(exchanged);
         seller.receiveMoney(money); // initial currency
     }
 
-    private Offer getOffer(List<Offer> list,String item) {
+    private Offer getOffer(List<Offer> list, String item) {
         return list.stream().filter(offer -> item.equals(offer.getName()))
                 .findFirst()
                 .orElse(new Offer("No offers", new ArrayList<>()));
-    }
-
-    public void addItemToBuy(Offer offer) {
-        itemsToBuy.add(offer);
     }
 
     public void offerItemForSale(Offer offer) {
@@ -110,12 +111,16 @@ public class Person {
         return itemsToBuy;
     }
 
+    public List<Person> getPeople() {
+        return people;
+    }
+
     @Override
     public String toString() {
         String wallet = this.wallet.printWallet();
-        if(wallet.length() == 0){
+        if (wallet.length() == 0) {
             wallet = "Empty..";
         }
-        return format("Person: %s %s.\nWallet:\n%s", name, surname, wallet) ;
+        return format("Person: %s %s.\nWallet:\n%s", name, surname, wallet);
     }
 }

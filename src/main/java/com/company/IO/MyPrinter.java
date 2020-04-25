@@ -6,16 +6,16 @@ public class MyPrinter {
     public static void printBuyerList(Person buyer) {
         System.out.println("====== Buyer =====");
         System.out.println("My items: ");
-        buyer.getMyItems().forEach(v-> System.out.printf("- %s\n",v));
+        buyer.getMyItems().forEach(value -> System.out.printf("- %s\n", value));
         System.out.println("Items to buy:");
-        buyer.getItemsToBuy().forEach(v-> System.out.printf("- %s\n",v));
+        buyer.getItemsToBuy().forEach(value -> System.out.printf("- %s\n", value));
         System.out.println();
     }
 
     public static void printSellerLists(Person seller) {
         System.out.println("====== Seller =====");
         System.out.println("Items for sale: ");
-        seller.getItemsForSale().forEach(v-> System.out.printf("- %s\n",v));
+        seller.getItemsForSale().forEach(value -> System.out.printf("- %s\n", value));
         System.out.println();
     }
 

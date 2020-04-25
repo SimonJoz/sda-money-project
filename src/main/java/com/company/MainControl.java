@@ -1,8 +1,10 @@
 package com.company;
 
 import com.company.IO.DataReader;
-import com.company.exceptions.NoSuchCurrencyException;
 import com.company.model.Currency;
+import com.company.matchOfferStrategies.MatcherType;
+import com.company.exceptions.NoSuchCurrencyException;
+import com.company.exceptions.NoSuchMatcherException;
 import com.company.model.Money;
 import com.company.model.Offer;
 import com.company.model.Person;
@@ -78,9 +80,43 @@ public class MainControl {
     private void buy(Person buyer, Person seller) {
         System.out.println("Required item: ");
         String item = reader.readString();
+        MatcherType type = getMatcherType();
         Currency currency = getInputCurrency();
-        buyer.buy(seller, item, currency);
+        buyer.buy(seller, item, currency, type);
         printInfo(buyer, seller);
+    }
+
+
+    // is it possible.. ??
+//    private <T> T getCorrectInput(T t) {
+//        T obj = null;
+//        boolean inputOk = false;
+//        while (!inputOk) {
+//            try {
+//                obj = t;
+//                inputOk = true;
+//            } catch (Exception e) {
+//                System.err.println("Wrong input !! Try again.");
+//            }
+//        }
+//        return obj;
+//    }
+
+
+    private MatcherType getMatcherType() {
+        MatcherType type = null;
+        boolean inputOk = false;
+        while (!inputOk) {
+            try {
+                type = reader.readMatcherType();
+                inputOk = true;
+            } catch (InputMismatchException e) {
+                System.err.println("Wrong input type !! Try again.");
+            } catch (NoSuchMatcherException e) {
+                System.err.println("No such matcher type !! Try again.");
+            }
+        }
+        return type;
     }
 
     private Currency getInputCurrency() {
@@ -90,8 +126,6 @@ public class MainControl {
             try {
                 currency = reader.readCurrency();
                 inputOk = true;
-            } catch (InputMismatchException e) {
-                System.err.println("Wrong input type. Try again.");
             } catch (NoSuchCurrencyException e) {
                 System.err.println("No such currency !! Try again.");
             }

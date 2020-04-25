@@ -1,7 +1,9 @@
 package com.company.IO;
 
+import com.company.matchOfferStrategies.MatcherType;
 import com.company.exceptions.NoSuchCurrencyException;
 import com.company.model.Currency;
+import com.company.exceptions.NoSuchMatcherException;
 import com.company.model.Money;
 
 import java.util.Scanner;
@@ -28,11 +30,7 @@ public class DataReader {
     public Currency readCurrency() throws NoSuchCurrencyException {
         System.out.println("Please choose currency: ");
         Currency.printCurrencies();
-        Currency currency = Currency.getCurrencyByInt(readInt());
-        if(currency.equals(Currency.NO_SUCH_CURRENCY)){
-            throw new NoSuchCurrencyException();
-        }
-        return currency;
+        return Currency.getCurrencyByName(readString());
     }
 
     public Money readMoney() throws NoSuchCurrencyException {
@@ -40,6 +38,13 @@ public class DataReader {
         System.out.println("Please enter amount: ");
         int amount = readInt();
         return new Money(amount, currency);
+    }
+    public MatcherType readMatcherType() throws NoSuchMatcherException {
+        System.out.println("Please choose matcher type: ");
+        MatcherType.printMatchers();
+        int input = readInt();
+        return MatcherType.getMatcherTypeById(input);
+
     }
 
 }

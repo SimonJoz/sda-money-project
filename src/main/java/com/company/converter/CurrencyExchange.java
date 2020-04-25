@@ -4,15 +4,7 @@ import com.company.model.Currency;
 import com.company.model.Money;
 
 public class CurrencyExchange {
-    Converter converter;
-
-    public Money convert(Money money) {
-        return this.converter.convert(money);
-    }
-
-    public void setConverter(Converter converter) {
-        this.converter = converter;
-    }
+    private Converter converter;
 
     public Money changeMoney(Currency currency, Money moneyToConvert) {
         switch (currency) {
@@ -30,5 +22,13 @@ public class CurrencyExchange {
                 break;
         }
         return convert(moneyToConvert);
+    }
+
+    private Money convert(Money money) {
+        return this.converter.convert(money);
+    }
+
+    private void setConverter(Converter converter) {
+        this.converter = converter;
     }
 }
