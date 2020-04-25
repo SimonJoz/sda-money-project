@@ -1,6 +1,6 @@
-package com.model;
+package com.company.model;
 
-import com.exceptions.NotEnoughMoneyException;
+import com.company.exceptions.NotEnoughMoneyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,7 +30,7 @@ class WalletTest {
     @ParameterizedTest
     @MethodSource("supplyEntrySet")
     public void putInTest_should_add_non_existing_currency(Currency currency, Money value) {
-        Wallet emptyWallet = new Wallet();  // initial wallet empty.
+        Wallet emptyWallet = new Wallet();
         Map<Currency, Money> moneyMap = emptyWallet.getMoneyMap();
         assertEquals(moneyMap.size(), 0);
 
@@ -59,7 +59,7 @@ class WalletTest {
         Map<Currency, Money> moneyMap = emptyWallet.getMoneyMap();
         assertEquals(moneyMap.size(), 0);
 
-        RuntimeException exception = assertThrows(NotEnoughMoneyException.class,
+        Exception exception = assertThrows(NotEnoughMoneyException.class,
                 () -> emptyWallet.takeOut(value));
         assertNull(exception.getMessage());
 
@@ -79,7 +79,7 @@ class WalletTest {
 
     @ParameterizedTest
     @MethodSource("supplyMoneyValues")
-    public void takeOutTest_should_update_current_map(Money value) {
+    public void takeOutTest_should_update_current_map(Money value) throws NotEnoughMoneyException {
         Map<Currency, Money> moneyMap = wallet.getMoneyMap();
         wallet.takeOut(value);
         BigDecimal currentAmount = moneyMap.get(value.getCurrency()).getAmount();

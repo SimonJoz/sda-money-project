@@ -1,4 +1,4 @@
-package com.model;
+package com.company.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,7 +35,7 @@ class PersonTest {
     public void should_update_receiver_wallet(Money moneyToPay) {
         Currency currency = moneyToPay.getCurrency();
         BigDecimal amountToPay = moneyToPay.getAmount();
-        person1.pay(person2, moneyToPay);
+        person1.giveMoney(person2, moneyToPay);
         Map<Currency, Money> person2Wallet = person2.getWallet().getMoneyMap();
         assertThat(person2Wallet, hasKey(currency));
         BigDecimal amountAfterReceivedPayment = person2Wallet.get(currency).getAmount();
@@ -48,7 +48,7 @@ class PersonTest {
     public void should_update_payer_wallet(Money moneyToPay) {
         Currency currency = moneyToPay.getCurrency();
         BigDecimal amountToPay = moneyToPay.getAmount();
-        person1.pay(person2, moneyToPay);
+        person1.giveMoney(person2, moneyToPay);
         Map<Currency, Money> person1Wallet = person1.getWallet().getMoneyMap();
         assertThat(person1Wallet, hasKey(currency));
         BigDecimal amountAfterPayment = person1Wallet.get(currency).getAmount();

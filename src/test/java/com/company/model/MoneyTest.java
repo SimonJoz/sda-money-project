@@ -1,7 +1,7 @@
-package com.model;
+package com.company.model;
 
-import com.exceptions.IncorrectAmountException;
-import com.exceptions.NotEnoughMoneyException;
+import com.company.exceptions.IncorrectAmountException;
+import com.company.exceptions.NotEnoughMoneyException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +42,7 @@ class MoneyTest {
 
     @ParameterizedTest
     @ValueSource(ints = {10, 20, 50, 300, 346, 995})
-    public void should_return_correct_moneyOut_amount(int value) {
+    public void should_return_correct_moneyOut_amount(int value) throws NotEnoughMoneyException {
         Money moneyOut = new Money(new BigDecimal(value), Currency.PLN);
         money.moneyOut(moneyOut);
         BigDecimal result = BigDecimal.valueOf(1000).subtract(BigDecimal.valueOf(value));
@@ -51,7 +51,7 @@ class MoneyTest {
 
     @ParameterizedTest
     @ValueSource(ints = {10, 20, 50, 300, 346, 995})
-    public void should_return_incorrect_moneyOut_amount(int value) {
+    public void should_return_incorrect_moneyOut_amount(int value) throws NotEnoughMoneyException {
         Money moneyOut = new Money(new BigDecimal(value), Currency.PLN);
         money.moneyOut(moneyOut);
         BigDecimal result = BigDecimal.valueOf(1000).add(BigDecimal.valueOf(value));
@@ -62,7 +62,7 @@ class MoneyTest {
     @MethodSource("supplyMoneyValues")
     public void moneyOut_should_throw_NoEnoughMoneyException(Money value) {
         money = new Money(BigDecimal.TEN, Currency.PLN);
-        RuntimeException except = Assertions.assertThrows(NotEnoughMoneyException.class,
+        Exception except = Assertions.assertThrows(NotEnoughMoneyException.class,
                 () -> money.moneyOut(value));
         assertNull(except.getMessage());
     }

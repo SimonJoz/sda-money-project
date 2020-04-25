@@ -1,4 +1,7 @@
-package com.model;
+package com.company.model;
+
+import com.company.exceptions.IncorrectPaymentException;
+import com.company.exceptions.NotEnoughMoneyException;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -13,19 +16,29 @@ public class Wallet {
         moneyMap = new HashMap<>();
     }
 
+
+    public void confirmReceivingMoney(Money money) throws IncorrectPaymentException {
+            BigDecimal currentBalance = moneyMap.get(money.getCurrency()).getAmount();
+            BigDecimal expectedBalance = currentBalance.add(money.getAmount());
+            if(currentBalance.add(money.getAmount()).compareTo(expectedBalance) != 0){
+                throw new IncorrectPaymentException();
+            }
+            System.out.println("Receiving money confirmed ! ");
+    }
+
     public void putIn(Money money) {
         Currency currency = money.getCurrency();
         Money moneyInCurrency = getMoneyInCurrency(currency);
         moneyInCurrency.moneyIn(money);
     }
 
-    public void takeOut(Money money) {
+    public void takeOut(Money money) throws NotEnoughMoneyException {
         Currency currency = money.getCurrency();
         Money moneyOutCurrency = getMoneyInCurrency(currency);
         moneyOutCurrency.moneyOut(money);
     }
 
-    private Money getMoneyInCurrency(Currency currency) {
+    public Money getMoneyInCurrency(Currency currency) {
         if (!moneyMap.containsKey(currency)) {
             moneyMap.put(currency, new Money(BigDecimal.ZERO, currency));
         }

@@ -1,58 +1,41 @@
 package com.company;
 
-import com.model.Currency;
-import com.model.Money;
-import com.model.Person;
+import com.company.model.Currency;
+import com.company.model.Money;
+import com.company.model.Offer;
+import com.company.model.Person;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        Person person1 = new Person("Bob", "Smith");
-        Person person2 = new Person("Sue", "Doe");
-        person1.receiveMoney(new Money(new BigDecimal(50), Currency.PLN));
-        person2.receiveMoney(new Money(new BigDecimal(50), Currency.PLN));
+        Person Bob = new Person("Bob", "Smith");
+        Person Sue = new Person("Sue", "Doe");
 
-        System.out.println("=======================");
-        System.out.println(person1);
-        System.out.println();
-        System.out.println(person2);
-        person1.pay(person2, new Money(BigDecimal.TEN, Currency.USD));
-        System.out.println("=======================");
+        Sue.receiveMoney(new Money(100, Currency.PLN));
 
-        System.out.println(person1);
-        System.out.println();
-        System.out.println(person2);
-        person1.pay(person2, new Money(new BigDecimal(60), Currency.PLN));
-        System.out.println("=======================");
+        Sue.addItemToBuy(new Offer("Mouse", new ArrayList<>(List.of(
+                new Money(20, Currency.EUR), new Money(1, Currency.PLN)))));
 
-        System.out.println(person1);
-        System.out.println();
-        System.out.println(person2);
-        person1.pay(person2, new Money(BigDecimal.TEN, Currency.PLN));
-        System.out.println("\n" + person1);
-        System.out.println();
-        System.out.println(person2);
-        System.out.println("=======================");
+        Sue.addItemToBuy(new Offer("Keyboard", new ArrayList<>(List.of(
+                new Money(5, Currency.USD), new Money(5, Currency.PLN)))));
 
 
-        person1.receiveMoney(new Money(new BigDecimal(20), Currency.USD));
-        System.out.println("\n" + person1);
-        System.out.println();
-        System.out.println(person2);
-        System.out.println("=======================");
+        ArrayList<Money> sellOffers = new ArrayList<>();
+        sellOffers.add(new Money(5, Currency.USD));
+        sellOffers.add(new Money(3, Currency.PLN));
+        sellOffers.add(new Money(2, Currency.EUR));
 
-        person1.pay(person2, new Money(new BigDecimal(10), Currency.USD));
-        System.out.println("\n" + person1);
-        System.out.println();
-        System.out.println(person2);
-        System.out.println("=======================");
+        Bob.offerItemForSale(new Offer("Mouse", new ArrayList<>(List.of(
+                new Money(2, Currency.USD),
+                new Money(2, Currency.PLN)))));
+        Bob.offerItemForSale(new Offer("Keyboard", new ArrayList<>(sellOffers)));
+        Bob.offerItemForSale(new Offer("Headphones", new ArrayList<>(sellOffers)));
 
-        person1.pay(person2, new Money(new BigDecimal(-20), Currency.PLN));
-//        System.out.println("\n" + person1);
-//        System.out.println();
-//        System.out.println(person2);
-//        System.out.println("=======================");
+        MainControl control = new MainControl();
+        control.mainLoop(Sue, Bob);
+
     }
 }
