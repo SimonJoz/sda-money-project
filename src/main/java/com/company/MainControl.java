@@ -1,23 +1,65 @@
 package com.company;
 
 import com.company.IO.DataReader;
-import com.company.model.Currency;
-import com.company.matchOfferStrategies.MatcherType;
+import com.company.enums.Currency;
+import com.company.enums.MatcherType;
 import com.company.exceptions.NoSuchCurrencyException;
 import com.company.exceptions.NoSuchMatcherException;
 import com.company.model.Money;
 import com.company.model.Offer;
 import com.company.model.Person;
+import com.company.model.Simulation;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.company.IO.MyPrinter.*;
 
 public class MainControl {
+    private static final String SIMULATION_MODE = "SIMULATION";
+    private static final String CLI_MODE = "CLI";
     private DataReader reader = new DataReader();
+    private Simulation simulation = new Simulation();
+    private SimulationControl simulationControl = new SimulationControl(simulation);
 
+    public void mainMenu(String[] args) throws InterruptedException {
+        String mode = SIMULATION_MODE;
+        simulation.importData();
+        if (args.length >= 1) {
+            mode = args[0];
+        }
+        switch (mode) {
+            case CLI_MODE:
+                mainLoop(simulation.getRandomPerson("Buyer")
+                        , simulation.getRandomPerson("Seller"));
+                break;
+            case SIMULATION_MODE:
+                simulation();
+        }
+    }
+
+    private void simulation() throws InterruptedException {
+        simulationControl.simulatePossibleTransactions();
+        simulation.generateSellOffersForAllPeoples(10);
+        simulation.generateBuyOffersForAllPeoples(5);
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
+
+        executorService.scheduleWithFixedDelay(() -> simulationControl.randomTransaction(),
+                5, 5, TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(() -> simulationControl.topUpSimulation(),
+                6, 5, TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(() -> simulationControl.offerItemForSaleSimulation(),
+                7, 5, TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(() -> simulationControl.addBuyReqSimulation(),
+                8, 5, TimeUnit.SECONDS);
+
+        executorService.awaitTermination(60, TimeUnit.SECONDS);
+        executorService.shutdown();
+    }
 
     void mainLoop(Person buyer, Person seller) {
         Options choice;
@@ -85,22 +127,6 @@ public class MainControl {
         buyer.buy(seller, item, currency, type);
         printInfo(buyer, seller);
     }
-
-
-    // is it possible.. ??
-//    private <T> T getCorrectInput(T t) {
-//        T obj = null;
-//        boolean inputOk = false;
-//        while (!inputOk) {
-//            try {
-//                obj = t;
-//                inputOk = true;
-//            } catch (Exception e) {
-//                System.err.println("Wrong input !! Try again.");
-//            }
-//        }
-//        return obj;
-//    }
 
 
     private MatcherType getMatcherType() {
@@ -191,6 +217,7 @@ public class MainControl {
             }
             return Options.values()[id];
         }
+
 
         public static void printOptions() {
             for (int i = 0; i < Options.values().length - 1; i++) {

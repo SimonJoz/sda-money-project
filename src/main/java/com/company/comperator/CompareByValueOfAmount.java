@@ -1,6 +1,6 @@
 package com.company.comperator;
 
-import com.company.converter.CurrencyExchange;
+import com.company.curencyExchange.CurrencyExchange;
 import com.company.model.Money;
 
 import java.math.BigDecimal;

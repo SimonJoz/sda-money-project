@@ -1,13 +1,13 @@
-package com.company.matchOfferStrategies;
+package com.company.matchingOffers;
 
-import com.company.exceptions.InvalidTransactionException;
+import com.company.exceptions.NoSuchItemException;
 import com.company.model.Money;
 import com.company.model.Offer;
 
-public class MatchExactOffer implements Matchable {
+class MatchExactOffer implements Matchable {
 
     @Override
-    public Money getMatch(Offer buyOffer, Offer sellOffer) throws InvalidTransactionException {
+    public Money getMatch(Offer buyOffer, Offer sellOffer) throws NoSuchItemException {
         Money result = null;
         for (Money willBuy : buyOffer.getPrices()) {
             for (Money willSell : sellOffer.getPrices()) {
@@ -18,7 +18,7 @@ public class MatchExactOffer implements Matchable {
             }
         }
         if (result == null) {
-            throw new InvalidTransactionException();
+            throw new NoSuchItemException();
         }
         return result;
 

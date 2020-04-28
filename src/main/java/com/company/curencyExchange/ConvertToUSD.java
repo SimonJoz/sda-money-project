@@ -1,12 +1,12 @@
-package com.company.converter;
+package com.company.curencyExchange;
 
-import com.company.model.Currency;
+import com.company.enums.Currency;
 import com.company.model.Money;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class ConvertToUSD implements Converter {
+class ConvertToUSD implements Converter {
     private Map<Currency, BigDecimal> exchangeRates = Map.of(
             Currency.USD, BigDecimal.ONE,
             Currency.EUR, BigDecimal.valueOf(1.08),

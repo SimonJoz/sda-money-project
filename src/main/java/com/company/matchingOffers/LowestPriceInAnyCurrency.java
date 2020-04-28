@@ -1,18 +1,18 @@
-package com.company.matchOfferStrategies;
+package com.company.matchingOffers;
 
 import com.company.comperator.CompareByValueOfAmount;
-import com.company.exceptions.InvalidTransactionException;
+import com.company.exceptions.NoSuchItemException;
 import com.company.model.Money;
 import com.company.model.Offer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LowestPriceInAnyCurrency implements Matchable {
+class LowestPriceInAnyCurrency implements Matchable {
     private CompareByValueOfAmount comparator = CompareByValueOfAmount.getInstance();
 
     @Override
-    public Money getMatch(Offer buyOffer , Offer sellOffer) throws InvalidTransactionException {
+    public Money getMatch(Offer buyOffer , Offer sellOffer) throws NoSuchItemException {
         List<Money> matches = new ArrayList<>();
         for (Money willBuy : buyOffer.getPrices()) {
             for (Money willSell : sellOffer.getPrices()) {
@@ -21,15 +21,10 @@ public class LowestPriceInAnyCurrency implements Matchable {
                 }
             }
         }
-        sortIfListNotEmpty(matches);
-        return matches.get(0);
-
-    }
-
-    private void sortIfListNotEmpty(List<Money> matches) throws InvalidTransactionException {
         if (matches.isEmpty()) {
-            throw new InvalidTransactionException();
+            throw new NoSuchItemException();
         }
         matches.sort(comparator);
+        return matches.get(0);
     }
 }

@@ -1,8 +1,8 @@
 package com.company.IO;
 
-import com.company.matchOfferStrategies.MatcherType;
+import com.company.enums.MatcherType;
 import com.company.exceptions.NoSuchCurrencyException;
-import com.company.model.Currency;
+import com.company.enums.Currency;
 import com.company.exceptions.NoSuchMatcherException;
 import com.company.model.Money;
 

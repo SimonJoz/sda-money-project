@@ -1,5 +1,6 @@
 package com.company.model;
 
+import com.company.enums.Currency;
 import com.company.exceptions.IncorrectAmountException;
 import com.company.exceptions.NotEnoughMoneyException;
 import org.junit.jupiter.api.Assertions;
@@ -71,7 +72,9 @@ class MoneyTest {
         return Stream.of(
                 Arguments.of(new Money(BigDecimal.valueOf(234), Currency.PLN)),
                 Arguments.of(new Money(BigDecimal.valueOf(11), Currency.USD)),
-                Arguments.of(new Money(BigDecimal.valueOf(2353), Currency.EUR))
+                Arguments.of(new Money(BigDecimal.valueOf(2353), Currency.EUR)),
+                Arguments.of(new Money(BigDecimal.valueOf(324), Currency.GBP))
+
         );
     }
 
@@ -81,16 +84,18 @@ class MoneyTest {
 
         RuntimeException except = Assertions.assertThrows(IncorrectAmountException.class,
                 () -> money = new Money(BigDecimal.valueOf(value), Currency.USD));
-        assertEquals(except.getMessage(), "Amount cannot be negative value.");
+        assertNull(except.getMessage());
 
         RuntimeException except2 = Assertions.assertThrows(IncorrectAmountException.class,
                 () -> money = new Money(BigDecimal.valueOf(value), Currency.PLN));
-        assertEquals(except2.getMessage(), "Amount cannot be negative value.");
+        assertNull(except2.getMessage());
 
         RuntimeException except3 = Assertions.assertThrows(IncorrectAmountException.class,
                 () -> money = new Money(BigDecimal.valueOf(value), Currency.EUR));
-        assertEquals(except2.getMessage(), "Amount cannot be negative value.");
+        assertNull(except2.getMessage());
     }
+
+
 
 
 }

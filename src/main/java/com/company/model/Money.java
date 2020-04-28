@@ -1,12 +1,17 @@
 package com.company.model;
 
+import com.company.enums.Currency;
+import com.company.enums.MyColor;
 import com.company.exceptions.IncorrectAmountException;
 import com.company.exceptions.NotEnoughMoneyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Money implements Comparable<Money> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Money.class);
     private BigDecimal amount;
     private Currency currency;
 
@@ -26,6 +31,7 @@ public class Money implements Comparable<Money> {
 
     public void moneyIn(Money money) {
         amount = amount.add(money.amount);
+        LOGGER.debug("{}AMOUNT AFTER MONEY IN -- {}.{}", MyColor.CYAN_BOLD, amount, MyColor.RESET);
     }
 
     public void moneyOut(Money money) throws NotEnoughMoneyException {
@@ -33,11 +39,13 @@ public class Money implements Comparable<Money> {
             throw new NotEnoughMoneyException();
         }
         amount = amount.subtract(money.amount);
+        LOGGER.debug("{}AMOUNT AFTER MONEY OUT -- {}{}", MyColor.CYAN_BOLD, amount, MyColor.RESET);
     }
 
     private void amountValidator(BigDecimal value) {
         if (value.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IncorrectAmountException("Amount cannot be negative value.");
+            LOGGER.error("{}NEGATIVE VALUE OF MONEY AMOUNT.{}", MyColor.RED_BOLD, MyColor.RESET);
+            throw new IncorrectAmountException();
         }
     }
 

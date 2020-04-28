@@ -4,18 +4,32 @@ import com.company.model.Person;
 
 public class MyPrinter {
     public static void printBuyerList(Person buyer) {
-        System.out.println("====== Buyer =====");
-        System.out.println("My items: ");
-        buyer.getMyItems().forEach(value -> System.out.printf("- %s\n", value));
-        System.out.println("Items to buy:");
-        buyer.getItemsToBuy().forEach(value -> System.out.printf("- %s\n", value));
+        System.out.print("====== Buyer =====\nMy items: ");
+
+        if (buyer.getMyItems().isEmpty()) {
+            System.out.println("Empty..");
+        } else {
+            System.out.println();
+            buyer.getMyItems().forEach(value -> System.out.printf("- %s\n", value));
+        }
+        System.out.print("Items to buy: ");
+        if (buyer.getItemsToBuy().isEmpty()) {
+            System.out.println("empty..");
+        } else {
+            System.out.println();
+            buyer.getItemsToBuy().forEach(value -> System.out.printf("- %s\n", value));
+        }
         System.out.println();
     }
 
     public static void printSellerLists(Person seller) {
-        System.out.println("====== Seller =====");
-        System.out.println("Items for sale: ");
-        seller.getItemsForSale().forEach(value -> System.out.printf("- %s\n", value));
+        System.out.print("====== Seller =====\nItems for sale: ");
+        if (seller.getItemsForSale().isEmpty()) {
+            System.out.println("empty..");
+        } else {
+            System.out.println();
+            seller.getItemsForSale().forEach(value -> System.out.printf("- %s\n", value));
+        }
         System.out.println();
     }
 

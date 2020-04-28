@@ -1,4 +1,4 @@
-package com.company.matchOfferStrategies;
+package com.company.enums;
 
 import com.company.exceptions.NoSuchMatcherException;
 

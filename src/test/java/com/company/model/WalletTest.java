@@ -1,5 +1,7 @@
 package com.company.model;
 
+import com.company.enums.Currency;
+import com.company.exceptions.IncorrectPaymentException;
 import com.company.exceptions.NotEnoughMoneyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +27,21 @@ class WalletTest {
         moneyMap.put(Currency.USD, new Money(BigDecimal.TEN, Currency.USD));
         moneyMap.put(Currency.PLN, new Money(BigDecimal.TEN, Currency.PLN));
         moneyMap.put(Currency.EUR, new Money(BigDecimal.TEN, Currency.EUR));
+        moneyMap.put(Currency.GBP, new Money(BigDecimal.TEN, Currency.GBP));
+    }
+
+    @ParameterizedTest
+    @MethodSource("supplyMoneyValues")
+    // confirmReceivingPayment()
+    public void should_throw_IncorrectPaymentException_if_balance_not_correct(Money payment){
+        Map<Currency, Money> moneyMap = wallet.getMoneyMap();
+        Money balance = moneyMap.get(payment.getCurrency());
+        Money wrongPayment = new Money(payment.getAmount().subtract(BigDecimal.ONE),
+                payment.getCurrency());
+        wallet.putIn(wrongPayment);
+        Exception exception = assertThrows(IncorrectPaymentException.class,
+                () -> wallet.confirmReceivingMoney(balance, payment));
+        assertNull(exception.getMessage());
     }
 
     @ParameterizedTest
@@ -73,8 +90,8 @@ class WalletTest {
         return Stream.of(
                 Arguments.of(Currency.USD, new Money(BigDecimal.valueOf(231), Currency.USD)),
                 Arguments.of(Currency.PLN, new Money(BigDecimal.valueOf(11), Currency.PLN)),
-                Arguments.of(Currency.EUR, new Money(BigDecimal.valueOf(2323), Currency.EUR))
-        );
+                Arguments.of(Currency.EUR, new Money(BigDecimal.valueOf(2323), Currency.EUR)),
+                Arguments.of(Currency.GBP, new Money(BigDecimal.valueOf(564), Currency.GBP)));
     }
 
     @ParameterizedTest
@@ -92,8 +109,8 @@ class WalletTest {
         return Stream.of(
                 Arguments.of(new Money(BigDecimal.valueOf(5), Currency.USD)),
                 Arguments.of(new Money(BigDecimal.valueOf(3), Currency.PLN)),
-                Arguments.of(new Money(BigDecimal.valueOf(7), Currency.EUR))
-        );
+                Arguments.of(new Money(BigDecimal.valueOf(7), Currency.EUR)),
+                Arguments.of(new Money(BigDecimal.valueOf(6), Currency.GBP)));
     }
 
     @ParameterizedTest
@@ -101,13 +118,13 @@ class WalletTest {
     public void should_contains_all_values_map_Test(Currency currency) {
         assertThat(wallet.getMoneyMap(), hasKey(currency));
         assertThat(wallet.getMoneyMap(), hasValue(wallet.getMoneyMap().get(currency)));
-        assertEquals(3, wallet.getMoneyMap().size());
+        assertEquals(4, wallet.getMoneyMap().size());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"EUR 10.00", "PLN 10.00", "USD 10.00"})
-    public void should_print_out_all_wallet_values(String expected) {
+    @ValueSource(strings = {"EUR: 10.00", "PLN: 10.00", "USD: 10.00","GBP: 10.00"})
+    public void should_print_out_all_wallet_values(String value) {
         String actual = wallet.printWallet();
-        assertThat(actual, containsString(expected));
+        assertTrue(actual.contains(value));
     }
 }

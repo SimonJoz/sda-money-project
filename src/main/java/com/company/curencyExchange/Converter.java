@@ -1,7 +1,7 @@
-package com.company.converter;
+package com.company.curencyExchange;
 
 import com.company.model.Money;
 
-public interface Converter {
+interface Converter {
     Money convert(Money money);
 }
