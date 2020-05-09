@@ -69,36 +69,36 @@ class FileManagerTest {
         String actual = offers.stream()
                 .map(Offer::toString)
                 .collect(Collectors.joining("\n"));
-        String expected = "pearl necklace: USD: 290.44; PLN: 1043.65; GBP: 181.62; EUR: 285.34;\n" +
-                "ladle: GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
-                "rubber duck: PLN: 75.71; USD: 82.57;\n" +
-                "pair of socks: PLN: 10.34;\n" +
-                "keyboard: USD: 5.56;\n" +
-                "carrot: USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
-                "card: PLN: 60.22; EUR: 9.37;\n" +
-                "zipper: USD: 82.57; PLN: 2.65; EUR: 0.34;\n" +
-                "towel: EUR: 20.00;\n" +
-                "cellphone: GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
-                "football: EUR: 0.34; PLN: 2.65;\n" +
-                "pine cone: USD: 2.00;\n" +
-                "clay pot: GBP: 4.00;\n" +
-                "panda: USD: 25.00;\n" +
-                "hanger: PLN: 75.71; USD: 82.57;\n" +
-                "box of markers: GBP: 1.78;\n" +
-                "shoes: GBP: 110.00;\n" +
-                "purse/bag: PLN: 75.71; USD: 82.57;\n" +
-                "camera: USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
-                "tomato: PLN: 6.45;\n" +
-                "zebra: GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
-                "leg warmers: USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
-                "candle: GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
-                "scallop shell: USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
-                "hair clip: GBP: 4.23; PLN: 12.22; EUR: 3.37;\n" +
-                "monitor: EUR: 252.34; PLN: 944.65;\n" +
-                "hair pin: EUR: 0.34; PLN: 2.65;\n" +
-                "can of beans: PLN: 75.71; USD: 82.57;\n" +
-                "sketch pad: PLN: 6.45;\n" +
-                "radio: USD: 40.44; PLN: 183.65; GBP: 61.62; EUR: 72.34;";
+        String expected = "\"pearl necklace\" USD: 290.44; PLN: 1043.65; GBP: 181.62; EUR: 285.34;\n" +
+                "\"ladle\" GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
+                "\"rubber duck\" PLN: 75.71; USD: 82.57;\n" +
+                "\"pair of socks\" PLN: 10.34;\n" +
+                "\"keyboard\" USD: 5.56;\n" +
+                "\"carrot\" USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
+                "\"card\" PLN: 60.22; EUR: 9.37;\n" +
+                "\"zipper\" USD: 82.57; PLN: 2.65; EUR: 0.34;\n" +
+                "\"towel\" EUR: 20.00;\n" +
+                "\"cellphone\" GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
+                "\"football\" EUR: 0.34; PLN: 2.65;\n" +
+                "\"pine cone\" USD: 2.00;\n" +
+                "\"clay pot\" GBP: 4.00;\n" +
+                "\"panda\" USD: 25.00;\n" +
+                "\"hanger\" PLN: 75.71; USD: 82.57;\n" +
+                "\"box of markers\" GBP: 1.78;\n" +
+                "\"shoes\" GBP: 110.00;\n" +
+                "\"purse/bag\" PLN: 75.71; USD: 82.57;\n" +
+                "\"camera\" USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
+                "\"tomato\" PLN: 6.45;\n" +
+                "\"zebra\" GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
+                "\"leg warmers\" USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
+                "\"candle\" GBP: 48.23; PLN: 92.22; EUR: 9.37;\n" +
+                "\"scallop shell\" USD: 0.44; PLN: 2.65; GBP: 0.10; EUR: 0.34;\n" +
+                "\"hair clip\" GBP: 4.23; PLN: 12.22; EUR: 3.37;\n" +
+                "\"monitor\" EUR: 252.34; PLN: 944.65;\n" +
+                "\"hair pin\" EUR: 0.34; PLN: 2.65;\n" +
+                "\"can of beans\" PLN: 75.71; USD: 82.57;\n" +
+                "\"sketch pad\" PLN: 6.45;\n" +
+                "\"radio\" USD: 40.44; PLN: 183.65; GBP: 61.62; EUR: 72.34;";
         assertEquals(30, offers.size());
         assertEquals(expected, actual);
     }

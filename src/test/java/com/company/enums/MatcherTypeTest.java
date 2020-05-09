@@ -31,7 +31,7 @@ class MatcherTypeTest {
     }
     private static Stream<Arguments> supplyTypes() {
         return Stream.of(
-                Arguments.of(0, MatcherType.EXACT),
+                Arguments.of(0, MatcherType.FIRST_EXACT_PRICE),
                 Arguments.of(1, MatcherType.ANY_HIGHEST_PRICE),
                 Arguments.of(2, MatcherType.ANY_LOWEST_PRICE),
                 Arguments.of(3, MatcherType.LOWEST_PRICE_IN_CURRENCY),

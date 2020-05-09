@@ -12,7 +12,7 @@ class LowestPriceInAnyCurrency implements Matchable {
     private CompareByValueOfAmount comparator = CompareByValueOfAmount.getInstance();
 
     @Override
-    public Money getMatch(Offer buyOffer , Offer sellOffer) throws NoSuchItemException {
+    public Money getMatch(Offer buyOffer, Offer sellOffer) throws NoSuchItemException {
         List<Money> matches = new ArrayList<>();
         for (Money willBuy : buyOffer.getPrices()) {
             for (Money willSell : sellOffer.getPrices()) {

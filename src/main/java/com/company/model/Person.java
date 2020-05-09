@@ -46,26 +46,33 @@ public class Person {
     }
 
     public void buy(Person seller, String reqItem, Currency currency, MatcherType type) {
+        LOGGER.info("{}MATCHING OFFERS.{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         Offer buyerOffer = getOffer(itemsToBuy, reqItem);
         LOGGER.debug("{}REQUIRED ITEM - {}.{}", MyColor.CYAN_BOLD, buyerOffer, MyColor.RESET);
         Offer sellerOffer = getOffer(seller.itemsForSale, reqItem);
+        LOGGER.debug("{}SELLER MATCHING ITEM - {}.{}", MyColor.CYAN_BOLD, sellerOffer, MyColor.RESET);
         OfferMatcher matcher = new OfferMatcher();
         try {
             Money matchingPrice = matcher.getMatchingOffer(buyerOffer, sellerOffer, type);
-            LOGGER.info("{}{} buying {} from {}{}", MyColor.YELLOW_BOLD, this.name,
+            LOGGER.info("{}\"{}\" BUYING '{}' FROM \"{}\"{}.", MyColor.YELLOW_BOLD, this.name,
                     reqItem, seller.getName(), MyColor.RESET);
             Money sellerBalance = seller.checkBalance(matchingPrice);
             pay(seller, currency, matchingPrice);
             seller.confirmPayment(sellerBalance, matchingPrice);
             updateBuyerLists(buyerOffer);
             updateSellerLists(seller, sellerOffer, matchingPrice);
-            LOGGER.info("{}TRANSACTION COMPLETED !{}", MyColor.YELLOW_BOLD, MyColor.RESET);
+            LOGGER.info("{}TRANSACTION COMPLETED !!!{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         } catch (NoSuchItemException e) {
             LOGGER.warn("{}NO MATCHING ITEM FIND FOR: \"{}\".{}", MyColor.RED_BOLD, reqItem, MyColor.RESET);
         } catch (NotEnoughMoneyException e) {
             LOGGER.warn("{}TRANSACTION FAILED.. NOT ENOUGH MONEY.{}", MyColor.RED_BOLD, MyColor.RESET);
         } catch (IncorrectPaymentException e) {
             LOGGER.warn("{}TRANSACTION FAILED.. INCORRECT PAYMENT !!{}", MyColor.RED_BOLD, MyColor.RESET);
+        } finally {
+            seller.logItemsForSale();
+            this.logItemsToBuy();
+            this.logMyItems();
+            System.out.println();
         }
     }
 
@@ -81,7 +88,6 @@ public class Person {
     private void updateBuyerLists(Offer buyerOffer) {
         addItemToMyList(buyerOffer);
         removeItemFromBuyList(buyerOffer);
-
     }
 
     private void addItemToMyList(Offer buyerOffer) {
@@ -106,39 +112,58 @@ public class Person {
         }
         LOGGER.debug("{}PRICE - {} - REMOVED FROM \"{}\" PRICES LIST.{}",
                 MyColor.CYAN_BOLD, money, sellerOffer.getName(), MyColor.RESET);
-
     }
 
     private void pay(Person seller, Currency currency, Money money) throws NotEnoughMoneyException {
         Money exchanged = cantor.changeMoney(currency, money);
-        LOGGER.info("{}{} is paying...{}", MyColor.YELLOW_BOLD, this.getName(), MyColor.RESET);
-        LOGGER.debug("{}ORIGINAL MONEY TO PAY - {};  EXCHANGED -- {}{}",
+        LOGGER.info("{}\"{}\" IS PAYING...{}", MyColor.YELLOW_BOLD, this.getName(), MyColor.RESET);
+        LOGGER.debug("{}ORIGINAL MONEY - {};  EXCHANGED - {}{}",
                 MyColor.CYAN_BOLD, money, exchanged, MyColor.RESET);
         wallet.takeOut(exchanged);
         seller.receiveMoney(money); // initial currency
     }
 
     public void receiveMoney(Money money) {
-        LOGGER.info("{}{}'s wallet:{}", MyColor.YELLOW_BOLD, this.getName(), MyColor.RESET);
+        LOGGER.info("{}SELLER WALLET:{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         wallet.putIn(money);
-
     }
 
-    public void offerItemForSale(Offer offer) {
+    public void addItemForSale(Offer offer) {
+        LOGGER.info("{}ADDING ITEM TO \"{}\" SELL LIST.{}", MyColor.YELLOW_BOLD, this.getName(), MyColor.RESET);
         itemsForSale.add(offer);
-        LOGGER.debug("{}\"{}\" - ADDED TO \"{}\" SELL_OFFERS LIST.{}", MyColor.CYAN_BOLD, this.getName(), offer, MyColor.RESET);
+        LOGGER.debug("{}ITEM: {}{}", MyColor.CYAN_BOLD, offer, MyColor.RESET);
+        LOGGER.info("{}ADDING ITEM COMPLETED !{}", MyColor.YELLOW_BOLD, MyColor.RESET);
     }
 
     public void addItemToBuy(Offer offer) {
+        LOGGER.info("{}ADDING ITEM TO \"{}\" BUY LIST.{}", MyColor.YELLOW_BOLD, this.getName(), MyColor.RESET);
         itemsToBuy.add(offer);
-        LOGGER.debug("{}\"{}\" - ADDED TO \"{}\" ITEMS_TO_BUY LIST.{}",
-                MyColor.CYAN_BOLD, offer, this.getName(), MyColor.RESET);
+        LOGGER.debug("{}ITEM: {}{}", MyColor.CYAN_BOLD, offer, MyColor.RESET);
+        LOGGER.info("{}ADDING ITEM COMPLETED !{}", MyColor.YELLOW_BOLD, MyColor.RESET);
     }
 
     private Offer getOffer(List<Offer> list, String item) {
         return list.stream().filter(offer -> item.equals(offer.getName()))
                 .findFirst()
                 .orElse(Offer.NO_OFFERS);
+    }
+
+    public void logItemsForSale() {
+        if (itemsForSale.isEmpty()) LOGGER.debug("{}SELLER OFFER - NO OFFERS..{}", MyColor.MAGENTA, MyColor.RESET);
+        itemsForSale.forEach(item -> LOGGER.debug("{}SELLER OFFER - {}{}"
+                , MyColor.MAGENTA, item, MyColor.RESET));
+    }
+
+    public void logItemsToBuy() {
+        if (itemsToBuy.isEmpty()) LOGGER.debug("{}BUYER OFFER - NO OFFERS..{}", MyColor.MAGENTA, MyColor.RESET);
+        itemsToBuy.forEach(item -> LOGGER.debug("{}BUYER OFFER - {}{}"
+                , MyColor.MAGENTA, item, MyColor.RESET));
+    }
+
+    public void logMyItems() {
+        if (myItems.isEmpty()) LOGGER.debug("{}BUYER MY ITEMS - NO ITEMS..{}", MyColor.MAGENTA, MyColor.RESET);
+        myItems.forEach(item -> LOGGER.debug("{}BUYER MY ITEMS - {}{}"
+                , MyColor.MAGENTA, item, MyColor.RESET));
     }
 
     public Wallet getWallet() {

@@ -31,7 +31,7 @@ public class Money implements Comparable<Money> {
 
     public void moneyIn(Money money) {
         amount = amount.add(money.amount);
-        LOGGER.debug("{}AMOUNT AFTER MONEY IN -- {}.{}", MyColor.CYAN_BOLD, amount, MyColor.RESET);
+        LOGGER.debug("{}AMOUNT AFTER MONEY IN - {}.{}", MyColor.CYAN_BOLD, amount, MyColor.RESET);
     }
 
     public void moneyOut(Money money) throws NotEnoughMoneyException {

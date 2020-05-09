@@ -5,7 +5,7 @@ import com.company.exceptions.NoSuchMatcherException;
 import java.util.Arrays;
 
 public enum MatcherType {
-    EXACT(0, "MATCH WITH EXACT OFFER"),
+    FIRST_EXACT_PRICE(0, "MATCH WITH EXACT OFFER"),
     ANY_HIGHEST_PRICE(1, "HIGHEST PRICE IN ANY CURRENCY"),
     ANY_LOWEST_PRICE(2, "LOWEST PRICE IN ANY CURRENCY"),
     LOWEST_PRICE_IN_CURRENCY(3, "LOWEST PRICE IN SPECIFIED CURRENCIES"),

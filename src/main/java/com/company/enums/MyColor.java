@@ -8,7 +8,6 @@ public enum MyColor {
     MAGENTA("\u001B[1;35m"),
     YELLOW_BOLD("\033[1;33m"),
     BLUE_BOLD("\033[1;34m"),
-    GREEN_BOLD("\033[1;32m"),
     CYAN_BOLD("\033[1;36m");
 
     private final String code;

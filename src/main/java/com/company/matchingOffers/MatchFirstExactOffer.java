@@ -4,7 +4,9 @@ import com.company.exceptions.NoSuchItemException;
 import com.company.model.Money;
 import com.company.model.Offer;
 
-class MatchExactOffer implements Matchable {
+class MatchFirstExactOffer implements Matchable {
+
+    // returns first matching price.
 
     @Override
     public Money getMatch(Offer buyOffer, Offer sellOffer) throws NoSuchItemException {
@@ -15,6 +17,9 @@ class MatchExactOffer implements Matchable {
                     result = willSell;
                     break;
                 }
+            }
+            if(result != null){
+                break;
             }
         }
         if (result == null) {

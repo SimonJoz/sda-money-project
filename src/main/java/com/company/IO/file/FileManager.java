@@ -28,9 +28,7 @@ public class FileManager {
         } catch (IOException e) {
             LOGGER.error("{} FILE \"{}\" NOT FOUND.{}", MyColor.RED, path, MyColor.RESET);
             System.exit(0);
-
         }
-
         return people;
     }
 
@@ -44,7 +42,6 @@ public class FileManager {
             LOGGER.error("{}FILE \"{}\" NOT FOUND.{}", MyColor.RED, path, MyColor.RESET);
             System.exit(0);
         }
-
         return offers;
     }
 

@@ -8,37 +8,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Simulation {
     private static final Logger LOGGER = LoggerFactory.getLogger(Simulation.class);
-    private static final int TOP_UP_LIMIT = 1000;
-    private List<Person> peoples;
-    private List<Offer> offers;
+    public static final int TOP_UP_LIMIT = 1000;
+    private List<Person> peoples = new ArrayList<>();
+    private List<Offer> offers = new ArrayList<>();
     private Random random = new Random();
     private FileManager fileManager = new FileManager();
 
 
-    public void generateSellOfferForRandomPerson(){
-        LOGGER.info("{}GENERATING SELL OFFER :{}", MyColor.YELLOW_BOLD, MyColor.RESET);
-        getRandomPerson("SELLER").getItemsForSale().add(getRandomOffer());
-    }
-    public void generateBuyOfferForRandomPerson(){
-        LOGGER.info("{}GENERATING BUY OFFER :{}", MyColor.YELLOW_BOLD, MyColor.RESET);
-        getRandomPerson("BUYER").getItemsToBuy().add(getRandomOffer());
-    }
-
     public Person generatePersonWithEmptyWallet(String text) {
+        LOGGER.info("{}GENERATING PERSON WITH EMPTY WALLET.{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         Person person = peoples.get(random.nextInt(peoples.size()));
         Person personWithEmptyWallet = new Person(person.getName(), person.getSurname());
-        LOGGER.debug("{}GENERATED {} -- {}.{}", MyColor.CYAN_BOLD, text, personWithEmptyWallet, MyColor.RESET);
+        LOGGER.debug("{}{} - {}.{}", MyColor.CYAN_BOLD, text, personWithEmptyWallet, MyColor.RESET);
         return personWithEmptyWallet;
     }
 
     public Person getRandomPerson(String text) {
+        LOGGER.info("{}GENERATING RANDOM PERSON.{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         Person person = peoples.get(random.nextInt(peoples.size()));
-        LOGGER.debug("{}{} -- {}.{}", MyColor.CYAN_BOLD, text, person, MyColor.RESET);
+        LOGGER.debug("{}{} - {}.{}", MyColor.CYAN_BOLD, text, person, MyColor.RESET);
         return person;
     }
 
@@ -51,48 +45,67 @@ public class Simulation {
     }
 
     public MatcherType chooseMatcherType() {
+        LOGGER.info("{}CHOOSING RANDOM MATCHER TYPE{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         MatcherType type = MatcherType.values()[random.nextInt(MatcherType.values().length)];
-        LOGGER.debug("{}CHOSEN MATCHER TYPE -- {}.{}", MyColor.CYAN_BOLD, type, MyColor.RESET);
+        LOGGER.debug("{}MATCHER TYPE - {}.{}", MyColor.CYAN_BOLD, type, MyColor.RESET);
         return type;
     }
 
     public Currency chooseCurrency() {
+        LOGGER.info("{}CHOOSING RANDOM CURRENCY.{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         Currency currency = Currency.values()[random.nextInt(Currency.values().length)];
-        LOGGER.debug("{}CHOSEN CURRENCY TO PAY IN -- {}.{}", MyColor.CYAN_BOLD, currency, MyColor.RESET);
+        LOGGER.debug("{}PAYMENT CURRENCY - {}.{}", MyColor.CYAN_BOLD, currency, MyColor.RESET);
         return currency;
     }
 
     public Money generateMoney() {
-        return new Money(BigDecimal.valueOf(random.nextInt(TOP_UP_LIMIT)), chooseCurrency());
+        LOGGER.info("{}GENERATING MONEY.{}", MyColor.YELLOW_BOLD, MyColor.RESET);
+        Money money = new Money(BigDecimal.valueOf(random.nextInt(TOP_UP_LIMIT)), chooseCurrency());
+        LOGGER.debug("{}AMOUNT - {}{}", MyColor.CYAN_BOLD, money, MyColor.RESET);
+        return money;
     }
 
-    public void simulateWalletTopUp(Person person) {
-        person.receiveMoney(generateMoney());
+    public void simulateWalletTopUp() {
+        Person randomPerson = getRandomPerson("PERSON");
+        randomPerson.receiveMoney(generateMoney());
+        LOGGER.debug("{}{}{}", MyColor.CYAN_BOLD, randomPerson, MyColor.RESET);
     }
 
     public void generateBuyOffersForAllPeoples(int number) {
         LOGGER.info("{}GENERATING BUY OFFERS:{}", MyColor.YELLOW_BOLD, MyColor.RESET);
         peoples.forEach(person -> generateUniqueRandomOffers(person.getItemsToBuy(), number));
+        LOGGER.info("{}GENERATING OFFERS COMPLETED !{}\n", MyColor.YELLOW_BOLD, MyColor.RESET);
+
     }
 
     public void generateSellOffersForAllPeoples(int number) {
         LOGGER.info("{}GENERATING SELL OFFERS:{}", MyColor.YELLOW_BOLD, MyColor.RESET);
-        peoples.forEach(person -> generateUniqueRandomOffers(person.getItemsForSale(),number));
+        peoples.forEach(person -> generateUniqueRandomOffers(person.getItemsForSale(), number));
+        LOGGER.info("{}GENERATING OFFERS COMPLETED !{}\n", MyColor.YELLOW_BOLD, MyColor.RESET);
     }
 
-    private void generateUniqueRandomOffers(List<Offer> list, int number) {
+    public void generateUniqueRandomOffers(List<Offer> list, int number) {
         int i = 0;
         while (i < number) {
             Offer randomOffer = getRandomOffer();
             if (!list.contains(randomOffer)) {
                 list.add(randomOffer);
+                LOGGER.debug("{}OFFER ADDED TO LIST - {}.{}", MyColor.CYAN_BOLD, randomOffer, MyColor.RESET);
                 i++;
             }
         }
     }
 
-    public void importData() {
+    public void provideDataForSimulation() {
         peoples = fileManager.importPeople("./peoples");
         offers = fileManager.importOffers("./offers");
+    }
+
+    public List<Person> getPeoples() {
+        return peoples;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
     }
 }

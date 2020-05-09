@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatchExactOfferTest {
-    private Matchable matcher = new MatchExactOffer();
+    private Matchable matcher = new MatchFirstExactOffer();
     private Offer sellOffer = new Offer("Item", new ArrayList<>());
     private Offer buyOffer = new Offer("Item", new ArrayList<>());
 

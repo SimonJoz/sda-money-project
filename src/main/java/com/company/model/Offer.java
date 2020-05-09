@@ -33,9 +33,8 @@ public class Offer {
         return sb.toString().trim();
     }
 
-
     @Override
     public String toString() {
-        return format("%s: %s", itemName, printList());
+        return format("\"%s\" %s", itemName, printList());
     }
 }

@@ -1,8 +1,8 @@
 package com.company.IO;
 
+import com.company.enums.Currency;
 import com.company.enums.MatcherType;
 import com.company.exceptions.NoSuchCurrencyException;
-import com.company.enums.Currency;
 import com.company.exceptions.NoSuchMatcherException;
 import com.company.model.Money;
 
@@ -27,6 +27,7 @@ public class DataReader {
         System.out.println("Bye !");
         scanner.close();
     }
+
     public Currency readCurrency() throws NoSuchCurrencyException {
         System.out.println("Please choose currency: ");
         Currency.printCurrencies();
@@ -39,6 +40,7 @@ public class DataReader {
         int amount = readInt();
         return new Money(amount, currency);
     }
+
     public MatcherType readMatcherType() throws NoSuchMatcherException {
         System.out.println("Please choose matcher type: ");
         MatcherType.printMatchers();

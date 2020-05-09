@@ -16,7 +16,7 @@ public class OfferMatcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(OfferMatcher.class);
     private Matchable matcher;
     private Map<MatcherType, Matchable> matchersMap = Map.of(
-            EXACT, new MatchExactOffer(),
+            FIRST_EXACT_PRICE, new MatchFirstExactOffer(),
             ANY_HIGHEST_PRICE, new HighestPriceInAnyCurrency(),
             ANY_LOWEST_PRICE, new LowestPriceInAnyCurrency(),
             LOWEST_PRICE_IN_CURRENCY, new LowestPriceInBuyerCurrency(),

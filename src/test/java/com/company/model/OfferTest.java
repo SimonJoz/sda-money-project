@@ -60,7 +60,7 @@ class OfferTest {
     @Test
     public void should_return_correct_string() {
         String actual = this.offer.toString();
-        String expected = "item: PLN: 10.00; USD: 10.00; EUR: 10.00; GBP: 10.00;";
+        String expected = "\"item\" PLN: 10.00; USD: 10.00; EUR: 10.00; GBP: 10.00;";
         assertEquals(expected, actual);
     }
 }
