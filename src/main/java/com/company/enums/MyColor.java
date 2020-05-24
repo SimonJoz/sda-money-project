@@ -2,12 +2,9 @@ package com.company.enums;
 
 public enum MyColor {
     RESET("\033[0m"),
-    RED("\033[0;31m"),
-
-    RED_BOLD("\033[1;31m"),
-    MAGENTA("\u001B[1;35m"),
     YELLOW_BOLD("\033[1;33m"),
     BLUE_BOLD("\033[1;34m"),
+    MAGENTA_BOLD("\033[1;35m"),
     CYAN_BOLD("\033[1;36m");
 
     private final String code;

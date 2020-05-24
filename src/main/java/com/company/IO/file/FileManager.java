@@ -1,7 +1,6 @@
 package com.company.IO.file;
 
 import com.company.enums.Currency;
-import com.company.enums.MyColor;
 import com.company.model.Money;
 import com.company.model.Offer;
 import com.company.model.Person;
@@ -24,9 +23,9 @@ public class FileManager {
         try {
             Files.newBufferedReader(Path.of(path), StandardCharsets.UTF_8)
                     .lines().forEach(line -> people.add(createPerson(line)));
-            LOGGER.info("{} PEOPLES IMPORT SUCCESSFUL.{}", MyColor.YELLOW_BOLD, MyColor.RESET);
+            LOGGER.info("PEOPLES IMPORT SUCCESSFUL.");
         } catch (IOException e) {
-            LOGGER.error("{} FILE \"{}\" NOT FOUND.{}", MyColor.RED, path, MyColor.RESET);
+            LOGGER.error("FILE \"{}\" NOT FOUND.", path);
             System.exit(0);
         }
         return people;
@@ -37,9 +36,9 @@ public class FileManager {
         try {
             Files.newBufferedReader(Path.of(path), StandardCharsets.UTF_8)
                     .lines().forEach(line -> offers.add(createOffer(line)));
-            LOGGER.info("{} OFFERS IMPORT SUCCESSFUL. {}", MyColor.YELLOW_BOLD, MyColor.RESET);
+            LOGGER.info("OFFERS IMPORT SUCCESSFUL.");
         } catch (IOException e) {
-            LOGGER.error("{}FILE \"{}\" NOT FOUND.{}", MyColor.RED, path, MyColor.RESET);
+            LOGGER.error("FILE \"{}\" NOT FOUND.",path);
             System.exit(0);
         }
         return offers;

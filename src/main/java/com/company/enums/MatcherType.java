@@ -2,8 +2,6 @@ package com.company.enums;
 
 import com.company.exceptions.NoSuchMatcherException;
 
-import java.util.Arrays;
-
 public enum MatcherType {
     FIRST_EXACT_PRICE(0, "MATCH WITH EXACT OFFER"),
     ANY_HIGHEST_PRICE(1, "HIGHEST PRICE IN ANY CURRENCY"),
@@ -26,8 +24,11 @@ public enum MatcherType {
         return MatcherType.values()[id];
     }
 
-    public static void printMatchers() {
-        Arrays.stream(MatcherType.values())
-                .forEach(matcher -> System.out.printf("%d -- %s\n", matcher.id, matcher.description));
+    public int getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

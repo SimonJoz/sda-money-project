@@ -1,0 +1,7 @@
+
+2020-06-19 05:15:06,214 -- main com.company.IO.file.FileManager: FILE "/Users/Szymon/IdeaProjects/sda-money-project/peoples" NOT FOUND.
+2020-06-19 05:16:53,526 -- main com.company.IO.file.FileManager: FILE "/Users/Szymon/IdeaProjects/sda-money-project/peoples" NOT FOUND.
+2020-06-21 22:41:13,706 -- main com.company.IO.file.FileManager: FILE "./peoples" NOT FOUND.
+2020-06-21 22:41:55,260 -- main com.company.IO.file.FileManager: FILE "./resources/peoples" NOT FOUND.
+2020-06-21 22:42:09,990 -- main com.company.IO.file.FileManager: FILE "resources/peoples" NOT FOUND.
+2020-06-21 22:44:32,986 -- main com.company.IO.file.FileManager: FILE "com/company/peoples" NOT FOUND.

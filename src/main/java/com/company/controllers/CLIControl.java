@@ -1,8 +1,9 @@
-package com.company.controler;
+package com.company.controllers;
 
 import com.company.IO.DataReader;
 import com.company.enums.Currency;
 import com.company.enums.MatcherType;
+import com.company.enums.MyColor;
 import com.company.exceptions.NoSuchCurrencyException;
 import com.company.exceptions.NoSuchMatcherException;
 import com.company.model.Money;
@@ -16,7 +17,6 @@ import java.util.List;
 import static com.company.IO.MyPrinter.*;
 
 class CLIControl {
-
     private DataReader reader = new DataReader();
 
     public void mainLoop(Person buyer, Person seller) {
@@ -29,10 +29,10 @@ class CLIControl {
                     buy(buyer, seller);
                     break;
                 case GIVE_MONEY:
-                    buyer.giveMoney(seller, getInputMoney());
+                    donateMoney(buyer, seller);
                     break;
                 case TOP_UP_WALLET:
-                    buyer.receiveMoney(getInputMoney());
+                    topUp(buyer);
                     break;
                 case PRINT_BUYER_LISTS:
                     printBuyerList(buyer);
@@ -62,8 +62,20 @@ class CLIControl {
         } while (!choice.equals(Options.EXIT));
     }
 
+    private void topUp(Person buyer) {
+        Money inputMoney = getInputMoney();
+        buyer.receiveMoney(inputMoney);
+        System.out.printf("%sWallet top up completed !%s",
+                MyColor.MAGENTA_BOLD, MyColor.RESET);
+    }
+
+    private void donateMoney(Person buyer, Person seller) {
+        Money inputMoney = getInputMoney();
+        buyer.giveMoney(seller, inputMoney);
+    }
+
     private void addOffer(List<Offer> offerList) {
-        System.out.println("Item name: ");
+        System.out.println("Item name:");
         String item = reader.readString();
         List<Money> prices = new ArrayList<>();
         String exitLoop = "";
@@ -148,14 +160,14 @@ class CLIControl {
 
     private enum Options {
         BUY(0, "BUY ITEM."),
-        GIVE_MONEY(1, "TRANSFER MONEY."),
+        GIVE_MONEY(1, "DONATE MONEY."),
         TOP_UP_WALLET(2, "TOP UP WALLET."),
-        PRINT_BUYER_LISTS(3, "PRINT BUYER OFFERS"),
-        PRINT_SELLER_LISTS(4, "PRINT SELLER OFFERS"),
-        BUYER_WALLET(5, "CHECK BUYER WALLET"),
-        SELLER_WALLET(6, "CHECK SELLER WALLET"),
+        PRINT_BUYER_LISTS(3, "BUYER OFFERS"),
+        PRINT_SELLER_LISTS(4, "SELLER OFFERS"),
+        BUYER_WALLET(5, "BUYER WALLET"),
+        SELLER_WALLET(6, "SELLER WALLET"),
         ADD_BUY_OFFER(7, "ADD BUY OFFER"),
-        ADD_SELL_OFFER(8, "ADD BUY OFFER"),
+        ADD_SELL_OFFER(8, "ADD SELL OFFER"),
         EXIT(9, "EXIT"),
         NO_SUCH_OPTION(10, "NO SUCH OPTION");
 
@@ -177,8 +189,9 @@ class CLIControl {
         public static void printOptions() {
             for (int i = 0; i < Options.values().length - 1; i++) {
                 Options options = getOption(i);
-                System.out.printf("%d -- %s\n", options.id, options.desc);
+                System.out.printf("%1d -- %s\n", options.id, options.desc);
             }
+
         }
     }
 }

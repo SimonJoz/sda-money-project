@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.controler.MainControl;
+import com.company.controllers.MainControl;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {

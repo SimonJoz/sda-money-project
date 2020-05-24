@@ -23,8 +23,7 @@ public enum Currency {
                 .orElseThrow(NoSuchCurrencyException::new);
     }
 
-    public static void printCurrencies() {
-        Arrays.stream(Currency.values())
-                .forEach(currency -> System.out.printf("- %s\n", currency));
+    public String getDesc() {
+        return desc;
     }
 }

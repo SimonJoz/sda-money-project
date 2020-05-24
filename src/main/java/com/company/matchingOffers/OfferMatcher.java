@@ -1,7 +1,6 @@
 package com.company.matchingOffers;
 
 import com.company.enums.MatcherType;
-import com.company.enums.MyColor;
 import com.company.exceptions.NoSuchItemException;
 import com.company.model.Money;
 import com.company.model.Offer;
@@ -25,7 +24,7 @@ public class OfferMatcher {
     public Money getMatchingOffer(Offer buyOffer, Offer sellOffer, MatcherType type) throws NoSuchItemException {
         setMatcher(matchersMap.get(type));
         Money match = matcher.getMatch(buyOffer, sellOffer);
-        LOGGER.debug("{}MATCHING PRICE - {}.{}", MyColor.CYAN_BOLD, match, MyColor.RESET);
+        LOGGER.debug("MATCHING PRICE - {}.", match);
         return match;
     }
 

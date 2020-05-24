@@ -15,7 +15,7 @@ class FileManagerTest {
 
     @Test
     void should_import_form_file_and_return_list_of_people() {
-        List<Person> people = manager.importPeople("./peoples");
+        List<Person> people = manager.importPeople("src/main/java/com/company/peoples");
         String actual = people.stream()
                 .map(person -> format("%s %s", person.getName(), person.getSurname()))
                 .collect(Collectors.joining("\n"));
@@ -65,7 +65,7 @@ class FileManagerTest {
 
     @Test
     void should_import_form_file_and_return_list_of_offers() {
-        List<Offer> offers = manager.importOffers("./offers");
+        List<Offer> offers = manager.importOffers("src/main/java/com/company/offers");
         String actual = offers.stream()
                 .map(Offer::toString)
                 .collect(Collectors.joining("\n"));

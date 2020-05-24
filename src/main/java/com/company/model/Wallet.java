@@ -1,7 +1,6 @@
 package com.company.model;
 
 import com.company.enums.Currency;
-import com.company.enums.MyColor;
 import com.company.exceptions.IncorrectPaymentException;
 import com.company.exceptions.NotEnoughMoneyException;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class Wallet {
         if (actualMoney.getAmount().compareTo(afterPayment) != 0) {
             throw new IncorrectPaymentException();
         }
-        LOGGER.info("{}RECEIVING MONEY CONFIRMED ! BALANCE: {}.{}", MyColor.YELLOW_BOLD, actualMoney, MyColor.RESET);
+        LOGGER.info("RECEIVING MONEY CONFIRMED ! BALANCE: {}.",  actualMoney);
     }
 
     public Money getBalance(Money money) {
@@ -40,13 +39,13 @@ public class Wallet {
 
     public void putIn(Money money) {
         Money moneyInCurrency = getMoneyInCurrency(money);
-        LOGGER.debug("{}PUTTING MONEY - {}.{}", MyColor.CYAN_BOLD, money, MyColor.RESET);
+        LOGGER.debug("PUTTING MONEY - {}.", money);
         moneyInCurrency.moneyIn(money);
     }
 
     public void takeOut(Money money) throws NotEnoughMoneyException {
         Money moneyInCurrency = getMoneyInCurrency(money);
-        LOGGER.debug("{}REMOVING MONEY - {}.{}", MyColor.CYAN_BOLD, money, MyColor.RESET);
+        LOGGER.debug("REMOVING MONEY - {}.", money);
         moneyInCurrency.moneyOut(money);
     }
 
@@ -56,7 +55,7 @@ public class Wallet {
             moneyMap.put(currency, new Money(BigDecimal.ZERO, currency));
         }
         Money result = moneyMap.get(currency);
-        LOGGER.debug("{}CURRENT BALANCE - {}.{}", MyColor.CYAN_BOLD, result, MyColor.RESET);
+        LOGGER.debug("CURRENT BALANCE - {}.", result);
         return result;
     }
 

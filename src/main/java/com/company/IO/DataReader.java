@@ -22,6 +22,13 @@ public class DataReader {
             scanner.nextLine();
         }
     }
+    public double readDecimal() {
+        try {
+            return scanner.nextDouble();
+        } finally {
+            scanner.nextLine();
+        }
+    }
 
     public void exit() {
         System.out.println("Bye !");
@@ -30,20 +37,20 @@ public class DataReader {
 
     public Currency readCurrency() throws NoSuchCurrencyException {
         System.out.println("Please choose currency: ");
-        Currency.printCurrencies();
+        MyPrinter.printCurrencies();
         return Currency.getCurrencyByName(readString());
     }
 
     public Money readMoney() throws NoSuchCurrencyException {
         Currency currency = readCurrency();
         System.out.println("Please enter amount: ");
-        int amount = readInt();
+        double amount = readDecimal();
         return new Money(amount, currency);
     }
 
     public MatcherType readMatcherType() throws NoSuchMatcherException {
-        System.out.println("Please choose matcher type: ");
-        MatcherType.printMatchers();
+        System.out.println("Match by: ");
+        MyPrinter.printMatchers();
         int input = readInt();
         return MatcherType.getMatcherTypeById(input);
 

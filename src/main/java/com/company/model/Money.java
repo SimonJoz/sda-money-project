@@ -1,7 +1,6 @@
 package com.company.model;
 
 import com.company.enums.Currency;
-import com.company.enums.MyColor;
 import com.company.exceptions.IncorrectAmountException;
 import com.company.exceptions.NotEnoughMoneyException;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class Money implements Comparable<Money> {
 
     public void moneyIn(Money money) {
         amount = amount.add(money.amount);
-        LOGGER.debug("{}AMOUNT AFTER MONEY IN - {}.{}", MyColor.CYAN_BOLD, amount, MyColor.RESET);
+        LOGGER.debug("AMOUNT AFTER MONEY IN - {}.", amount);
     }
 
     public void moneyOut(Money money) throws NotEnoughMoneyException {
@@ -39,12 +38,12 @@ public class Money implements Comparable<Money> {
             throw new NotEnoughMoneyException();
         }
         amount = amount.subtract(money.amount);
-        LOGGER.debug("{}AMOUNT AFTER MONEY OUT -- {}{}", MyColor.CYAN_BOLD, amount, MyColor.RESET);
+        LOGGER.debug("AMOUNT AFTER MONEY OUT -- {}", amount);
     }
 
     private void amountValidator(BigDecimal value) {
         if (value.compareTo(BigDecimal.ZERO) < 0) {
-            LOGGER.error("{}NEGATIVE VALUE OF MONEY AMOUNT.{}", MyColor.RED_BOLD, MyColor.RESET);
+            LOGGER.error("NEGATIVE VALUE OF MONEY AMOUNT.");
             throw new IncorrectAmountException();
         }
     }

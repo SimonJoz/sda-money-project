@@ -1,4 +1,4 @@
-package com.company.controler;
+package com.company.controllers;
 
 import com.company.enums.Currency;
 import com.company.enums.MatcherType;
@@ -43,10 +43,10 @@ class SimulationControl {
         System.out.printf("%40sADDING SALE OFFER SIMULATION%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person seller = simulation.getRandomPerson("SELLER");
         seller.logItemsForSale();
-        LOGGER.info("{}GENERATING SELL OFFER{}", MyColor.YELLOW_BOLD, MyColor.RESET);
+        LOGGER.info("GENERATING SELL OFFER");
         simulation.generateUniqueRandomOffers(seller.getItemsForSale(), 1);
         seller.logItemsForSale();
-        LOGGER.info("{}COMPLETED !{}\n", MyColor.YELLOW_BOLD, MyColor.RESET);
+        LOGGER.info("COMPLETED !\n");
 
 
     }
@@ -55,16 +55,16 @@ class SimulationControl {
         System.out.printf("%40sADDING BUY OFFER SIMULATION%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person buyer = simulation.getRandomPerson("BUYER");
         buyer.logItemsToBuy();
-        LOGGER.info("{}GENERATING BUY OFFER{}", MyColor.YELLOW_BOLD, MyColor.RESET);
+        LOGGER.info("GENERATING BUY OFFER");
         simulation.generateUniqueRandomOffers(buyer.getItemsToBuy(), 1);
         buyer.logItemsToBuy();
-        LOGGER.info("{}COMPLETED !{}\n", MyColor.YELLOW_BOLD, MyColor.RESET);
+        LOGGER.info("COMPLETED !\n");
     }
 
     void topUpSimulation() {
         System.out.printf("%40sWALLET TOP UP SIMULATION%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         simulation.simulateWalletTopUp();
-        LOGGER.info("{}TOP UP COMPLETED !{}\n", MyColor.YELLOW_BOLD, MyColor.RESET);
+        LOGGER.info("TOP UP COMPLETED !\n");
     }
 
     void randomTransaction() {
@@ -90,7 +90,7 @@ class SimulationControl {
         System.out.printf("%40sVALID TRANSACTION SIMULATION EXAMPLE%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person buyer = simulation.generatePersonWithEmptyWallet("BUYER");
         Person seller = simulation.generatePersonWithEmptyWallet("SELLER");
-        LOGGER.info("{}GENERATING ITEMS{}", MyColor.YELLOW_BOLD, MyColor.RESET);
+        LOGGER.info("GENERATING ITEMS");
         Offer offer = simulation.getRandomOffer();
         buyer.addItemToBuy(offer);
         seller.addItemForSale(offer);
@@ -106,7 +106,7 @@ class SimulationControl {
         System.out.printf("%40sNOT ENOUGH MONEY SIMULATION EXAMPLE%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person buyer = simulation.generatePersonWithEmptyWallet("BUYER");
         Person seller = simulation.generatePersonWithEmptyWallet("SELLER");
-        LOGGER.info("{}GENERATING ITEMS{}", MyColor.YELLOW_BOLD, MyColor.RESET);
+        LOGGER.info("GENERATING ITEMS");
         Offer offer = simulation.getRandomOffer();
         buyer.addItemToBuy(offer);
         seller.addItemForSale(offer);
