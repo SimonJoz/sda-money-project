@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Money implements Comparable<Money> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Money.class);
     private BigDecimal amount;
-    private Currency currency;
+    private final Currency currency;
 
     public Money(BigDecimal value, Currency currency) {
         this.amount = value;

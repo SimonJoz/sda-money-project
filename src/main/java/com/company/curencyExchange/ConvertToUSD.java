@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 class ConvertToUSD implements Converter {
-    private Map<Currency, BigDecimal> exchangeRates = Map.of(
+    private final Map<Currency, BigDecimal> exchangeRates = Map.of(
             Currency.USD, BigDecimal.ONE,
             Currency.EUR, BigDecimal.valueOf(1.08),
             Currency.PLN, BigDecimal.valueOf(0.24),

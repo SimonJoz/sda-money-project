@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 class ConvertToPLN implements Converter {
-    private Map<Currency, BigDecimal> exchangeRates = Map.of(
+    private final Map<Currency, BigDecimal> exchangeRates = Map.of(
             Currency.PLN, BigDecimal.ONE,
             Currency.USD, BigDecimal.valueOf(4.22),
             Currency.EUR, BigDecimal.valueOf(4.54),

@@ -17,13 +17,12 @@ import static java.lang.String.format;
 
 public class Person {
     private static final Logger LOGGER = LoggerFactory.getLogger(Person.class);
-    private String name;
-    private String surname;
-    private Wallet wallet;
-    private List<String> myItems;
-    private List<Offer> itemsForSale;
-    private List<Offer> itemsToBuy;
-    private CurrencyExchange cantor = new CurrencyExchange();
+    private final String name;
+    private final String surname;
+    private final Wallet wallet;
+    private final List<String> myItems;
+    private final List<Offer> itemsForSale;
+    private final List<Offer> itemsToBuy;
 
     public Person(String name, String surname) {
         wallet = new Wallet();
@@ -110,6 +109,7 @@ public class Person {
     }
 
     private void pay(Person seller, Currency currency, Money money) throws NotEnoughMoneyException {
+        CurrencyExchange cantor = CurrencyExchange.getInstance();
         Money exchanged = cantor.changeMoney(currency, money);
         LOGGER.info("\"{}\" IS PAYING...", this.getName());
         LOGGER.debug("ORIGINAL MONEY - {};  EXCHANGED - {}", money, exchanged);

@@ -12,16 +12,11 @@ public class LevelColorSetter extends ForegroundCompositeConverterBase<ILoggingE
     @Override
     protected String getForegroundColorCode(ILoggingEvent event) {
         Level level = event.getLevel();
-        switch (level.toInt()) {
-            case Level.ERROR_INT:
-            case Level.WARN_INT:
-                return BOLD + RED_FG;
-            case Level.INFO_INT:
-                return BOLD + YELLOW_FG;
-            case Level.DEBUG_INT:
-                return BOLD + CYAN_FG;
-            default:
-                return DEFAULT_FG;
-        }
+        return switch (level.toInt()) {
+            case Level.ERROR_INT, Level.WARN_INT -> BOLD + RED_FG;
+            case Level.INFO_INT -> BOLD + YELLOW_FG;
+            case Level.DEBUG_INT -> BOLD + CYAN_FG;
+            default -> DEFAULT_FG;
+        };
     }
 }

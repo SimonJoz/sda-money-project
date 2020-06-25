@@ -14,7 +14,7 @@ import static com.company.enums.MatcherType.*;
 public class OfferMatcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(OfferMatcher.class);
     private Matchable matcher;
-    private Map<MatcherType, Matchable> matchersMap = Map.of(
+    private final Map<MatcherType, Matchable> matchersMap = Map.of(
             FIRST_EXACT_PRICE, new MatchFirstExactOffer(),
             ANY_HIGHEST_PRICE, new HighestPriceInAnyCurrency(),
             ANY_LOWEST_PRICE, new LowestPriceInAnyCurrency(),

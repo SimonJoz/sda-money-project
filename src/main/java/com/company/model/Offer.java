@@ -7,8 +7,8 @@ import static java.lang.String.format;
 
 public class Offer {
     public static final Offer NO_OFFERS = new Offer("No offers", new ArrayList<>());
-    private String itemName;
-    private List<Money> prices;
+    private final String itemName;
+    private final List<Money> prices;
 
     public Offer(String item, List<Money> prices) {
         this.itemName = item;

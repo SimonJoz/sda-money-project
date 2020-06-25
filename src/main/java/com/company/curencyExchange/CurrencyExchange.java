@@ -7,7 +7,23 @@ import java.util.Map;
 
 public class CurrencyExchange {
     private Converter converter;
-    private Map<Currency, Converter> strategiesMap = Map.of(
+    private static CurrencyExchange instance;
+
+    private CurrencyExchange() {
+    }
+
+    public static CurrencyExchange getInstance() {
+        if (instance == null) {
+            synchronized (CurrencyExchange.class) {
+                if (instance == null) {
+                    instance = new CurrencyExchange();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private final Map<Currency, Converter> strategiesMap = Map.of(
             Currency.PLN, new ConvertToPLN(),
             Currency.EUR, new ConvertToEUR(),
             Currency.USD, new ConvertToUSD(),

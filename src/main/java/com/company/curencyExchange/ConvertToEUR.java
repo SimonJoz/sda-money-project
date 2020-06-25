@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 class ConvertToEUR implements Converter {
-    private Map<Currency, BigDecimal> exchangeRates = Map.of(
+    private final Map<Currency, BigDecimal> exchangeRates = Map.of(
             Currency.EUR, BigDecimal.ONE,
             Currency.USD, BigDecimal.valueOf(0.93),
             Currency.PLN, BigDecimal.valueOf(0.22),

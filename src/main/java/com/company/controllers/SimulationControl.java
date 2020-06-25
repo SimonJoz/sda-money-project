@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 class SimulationControl {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimulationControl.class);
-    private Simulation simulation;
+    private final Simulation simulation;
 
     public SimulationControl(Simulation simulation) {
         this.simulation = simulation;

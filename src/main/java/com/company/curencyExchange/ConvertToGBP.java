@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 class ConvertToGBP implements Converter {
-    private Map<Currency, BigDecimal> exchangeRates = Map.of(
+    private final Map<Currency, BigDecimal> exchangeRates = Map.of(
             Currency.GBP, BigDecimal.ONE,
             Currency.USD, BigDecimal.valueOf(0.81),
             Currency.PLN, BigDecimal.valueOf(0.19),

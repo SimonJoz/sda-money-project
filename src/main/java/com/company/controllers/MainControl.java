@@ -15,7 +15,7 @@ public class MainControl {
 
     private final CLIControl control = new CLIControl();
     private final Simulation simulation = new Simulation();
-    private SimulationControl simulationControl = new SimulationControl(simulation);
+    private final SimulationControl simulationControl = new SimulationControl(simulation);
 
     public void mainMenu(String[] args) throws InterruptedException {
         String mode = SIMULATION_MODE;

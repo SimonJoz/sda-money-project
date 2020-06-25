@@ -17,7 +17,7 @@ import java.util.List;
 import static com.company.IO.MyPrinter.*;
 
 class CLIControl {
-    private DataReader reader = new DataReader();
+    private final DataReader reader = new DataReader();
 
     public void mainLoop(Person buyer, Person seller) {
         Options choice;
@@ -25,39 +25,17 @@ class CLIControl {
             Options.printOptions();
             choice = getOption();
             switch (choice) {
-                case BUY:
-                    buy(buyer, seller);
-                    break;
-                case GIVE_MONEY:
-                    donateMoney(buyer, seller);
-                    break;
-                case TOP_UP_WALLET:
-                    topUp(buyer);
-                    break;
-                case PRINT_BUYER_LISTS:
-                    printBuyerList(buyer);
-                    break;
-                case PRINT_SELLER_LISTS:
-                    printSellerLists(seller);
-                    break;
-                case BUYER_WALLET:
-                    printWallet(buyer, "====== Buyer =====");
-                    break;
-                case SELLER_WALLET:
-                    printWallet(seller, "====== Seller =====");
-                    break;
-                case ADD_BUY_OFFER:
-                    addOffer(buyer.getItemsToBuy());
-                    break;
-                case ADD_SELL_OFFER:
-                    addOffer(seller.getItemsForSale());
-                    break;
-                case EXIT:
-                    reader.exit();
-                    break;
-                case NO_SUCH_OPTION:
-                    System.err.println(Options.NO_SUCH_OPTION.desc);
-                    break;
+                case BUY -> buy(buyer, seller);
+                case GIVE_MONEY -> donateMoney(buyer, seller);
+                case TOP_UP_WALLET -> topUp(buyer);
+                case PRINT_BUYER_LISTS -> printBuyerList(buyer);
+                case PRINT_SELLER_LISTS -> printSellerLists(seller);
+                case BUYER_WALLET -> printWallet(buyer, "====== Buyer =====");
+                case SELLER_WALLET -> printWallet(seller, "====== Seller =====");
+                case ADD_BUY_OFFER -> addOffer(buyer.getItemsToBuy());
+                case ADD_SELL_OFFER -> addOffer(seller.getItemsForSale());
+                case EXIT -> reader.exit();
+                case NO_SUCH_OPTION -> System.err.println(Options.NO_SUCH_OPTION.desc);
             }
         } while (!choice.equals(Options.EXIT));
     }
