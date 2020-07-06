@@ -4,8 +4,7 @@ import com.company.enums.Currency;
 import com.company.model.Money;
 import com.company.model.Offer;
 import com.company.model.Person;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -15,17 +14,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class FileManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileManager.class);
-
     public List<Person> importPeople(String path) {
         List<Person> people = new ArrayList<>();
         try {
             Files.newBufferedReader(Path.of(path), StandardCharsets.UTF_8)
                     .lines().forEach(line -> people.add(createPerson(line)));
-            LOGGER.info("PEOPLES IMPORT SUCCESSFUL.");
+            log.info("PEOPLES IMPORT SUCCESSFUL.");
         } catch (IOException e) {
-            LOGGER.error("FILE \"{}\" NOT FOUND.", path);
+            log.error("FILE \"{}\" NOT FOUND.", path);
             System.exit(0);
         }
         return people;
@@ -36,9 +34,9 @@ public class FileManager {
         try {
             Files.newBufferedReader(Path.of(path), StandardCharsets.UTF_8)
                     .lines().forEach(line -> offers.add(createOffer(line)));
-            LOGGER.info("OFFERS IMPORT SUCCESSFUL.");
+            log.info("OFFERS IMPORT SUCCESSFUL.");
         } catch (IOException e) {
-            LOGGER.error("FILE \"{}\" NOT FOUND.",path);
+            log.error("FILE \"{}\" NOT FOUND.",path);
             System.exit(0);
         }
         return offers;

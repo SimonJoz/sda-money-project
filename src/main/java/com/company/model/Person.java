@@ -7,16 +7,17 @@ import com.company.exceptions.IncorrectPaymentException;
 import com.company.exceptions.NoSuchItemException;
 import com.company.exceptions.NotEnoughMoneyException;
 import com.company.matchingOffers.OfferMatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
 
+@Slf4j
+@Getter
 public class Person {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Person.class);
     private final String name;
     private final String surname;
     private final Wallet wallet;
@@ -38,32 +39,32 @@ public class Person {
             wallet.takeOut(money);
             person.receiveMoney(money);
         } catch (NotEnoughMoneyException ex) {
-            LOGGER.warn("\nYOU HAVEN'T GOT ENOUGH MONEY TO COMPLETE TRANSACTION.");
+            log.warn("\nYOU HAVEN'T GOT ENOUGH MONEY TO COMPLETE TRANSACTION.");
         }
     }
 
     public void buy(Person seller, String reqItem, Currency currency, MatcherType type) {
-        LOGGER.info("MATCHING OFFERS.");
+        log.info("MATCHING OFFERS.");
         Offer buyerOffer = getOffer(itemsToBuy, reqItem);
-        LOGGER.debug("REQUIRED ITEM - {}.", buyerOffer);
+        log.debug("REQUIRED ITEM - {}.", buyerOffer);
         Offer sellerOffer = getOffer(seller.itemsForSale, reqItem);
-        LOGGER.debug("SELLER MATCHING ITEM - {}.", sellerOffer);
+        log.debug("SELLER MATCHING ITEM - {}.", sellerOffer);
         OfferMatcher matcher = new OfferMatcher();
         try {
             Money matchingPrice = matcher.getMatchingOffer(buyerOffer, sellerOffer, type);
-            LOGGER.info("\"{}\" BUYING '{}' FROM \"{}\".", this.name, reqItem, seller.getName());
+            log.info("\"{}\" BUYING '{}' FROM \"{}\".", this.name, reqItem, seller.getName());
             Money sellerBalance = seller.checkBalance(matchingPrice);
             pay(seller, currency, matchingPrice);
             seller.confirmPayment(sellerBalance, matchingPrice);
             updateBuyerLists(buyerOffer);
             updateSellerLists(seller, sellerOffer, matchingPrice);
-            LOGGER.info("TRANSACTION COMPLETED !!!");
+            log.info("TRANSACTION COMPLETED !!!");
         } catch (NoSuchItemException e) {
-            LOGGER.warn("NO MATCHING ITEM FIND FOR: \"{}\".", reqItem);
+            log.warn("NO MATCHING ITEM FIND FOR: \"{}\".", reqItem);
         } catch (NotEnoughMoneyException e) {
-            LOGGER.warn("TRANSACTION FAILED.. NOT ENOUGH MONEY.");
+            log.warn("TRANSACTION FAILED.. NOT ENOUGH MONEY.");
         } catch (IncorrectPaymentException e) {
-            LOGGER.warn("TRANSACTION FAILED.. INCORRECT PAYMENT !!");
+            log.warn("TRANSACTION FAILED.. INCORRECT PAYMENT !!");
         } finally {
             seller.logItemsForSale();
             this.logItemsToBuy();
@@ -87,98 +88,74 @@ public class Person {
     }
 
     private void addItemToMyList(Offer buyerOffer) {
-        myItems.add(buyerOffer.getName());
-        LOGGER.debug("ITEM ADDED TO {}'s MY_ITEMS LIST - \"{}\".",
-                this.getName(), buyerOffer.getName());
+        myItems.add(buyerOffer.getItemName());
+        log.debug("ITEM ADDED TO {}'s MY_ITEMS LIST - \"{}\".",
+                this.getName(), buyerOffer.getItemName());
     }
 
     private void removeItemFromBuyList(Offer buyerOffer) {
         itemsToBuy.remove(buyerOffer);
-        LOGGER.debug("ITEM REMOVED FROM {}'s ITEMS_TO_BUY LIST - \"{}\".",
-                this.getName(), buyerOffer.getName());
+        log.debug("ITEM REMOVED FROM {}'s ITEMS_TO_BUY LIST - \"{}\".",
+                this.getName(), buyerOffer.getItemName());
     }
 
     private void updateSellerLists(Person seller, Offer sellerOffer, Money money) {
         sellerOffer.updatePricesList(money);
         if (sellerOffer.getPrices().isEmpty()) {
             seller.itemsForSale.remove(sellerOffer);
-            LOGGER.debug("\"{}\" - REMOVED FROM SELLER LIST.", sellerOffer.getName());
+            log.debug("\"{}\" - REMOVED FROM SELLER LIST.", sellerOffer.getItemName());
             return;
         }
-        LOGGER.debug("PRICE - {} - REMOVED FROM \"{}\" PRICES LIST.", money, sellerOffer.getName());
+        log.debug("PRICE - {} - REMOVED FROM \"{}\" PRICES LIST.", money, sellerOffer.getItemName());
     }
 
     private void pay(Person seller, Currency currency, Money money) throws NotEnoughMoneyException {
         CurrencyExchange cantor = CurrencyExchange.getInstance();
         Money exchanged = cantor.changeMoney(currency, money);
-        LOGGER.info("\"{}\" IS PAYING...", this.getName());
-        LOGGER.debug("ORIGINAL MONEY - {};  EXCHANGED - {}", money, exchanged);
+        log.info("\"{}\" IS PAYING...", this.getName());
+        log.debug("ORIGINAL MONEY - {};  EXCHANGED - {}", money, exchanged);
         wallet.takeOut(exchanged);
         seller.receiveMoney(money); // initial currency
     }
 
     public void receiveMoney(Money money) {
-        LOGGER.info("SELLER WALLET:");
+        log.info("SELLER WALLET:");
         wallet.putIn(money);
     }
 
     public void addItemForSale(Offer offer) {
-        LOGGER.info("ADDING ITEM TO \"{}\" SELL LIST.", this.getName());
+        log.info("ADDING ITEM TO \"{}\" SELL LIST.", this.getName());
         itemsForSale.add(offer);
-        LOGGER.debug("ITEM: {}", offer);
-        LOGGER.info("ADDING ITEM COMPLETED !");
+        log.debug("ITEM: {}", offer);
+        log.info("ADDING ITEM COMPLETED !");
     }
 
     public void addItemToBuy(Offer offer) {
-        LOGGER.info("ADDING ITEM TO \"{}\" BUY LIST.", this.getName());
+        log.info("ADDING ITEM TO \"{}\" BUY LIST.", this.getName());
         itemsToBuy.add(offer);
-        LOGGER.debug("ITEM: {}", offer);
-        LOGGER.info("ADDING ITEM COMPLETED !");
+        log.debug("ITEM: {}", offer);
+        log.info("ADDING ITEM COMPLETED !");
     }
 
     private Offer getOffer(List<Offer> list, String item) {
-        return list.stream().filter(offer -> item.equals(offer.getName()))
+        return list.stream().filter(offer -> item.equals(offer.getItemName()))
                 .findFirst()
                 .orElse(Offer.NO_OFFERS);
     }
 
     public void logItemsForSale() {
-        if (itemsForSale.isEmpty()) LOGGER.debug("SELLER OFFER - NO OFFERS..");
-        itemsForSale.forEach(item -> LOGGER.debug("SELLER OFFER - {}", item));
+        if (itemsForSale.isEmpty()) log.debug("SELLER OFFER - NO OFFERS..");
+        itemsForSale.forEach(item -> log.debug("SELLER OFFER - {}", item));
     }
 
     public void logItemsToBuy() {
-        if (itemsToBuy.isEmpty()) LOGGER.debug("BUYER OFFER - NO OFFERS..");
-        itemsToBuy.forEach(item -> LOGGER.debug("BUYER OFFER - {}", item));
+        if (itemsToBuy.isEmpty()) log.debug("BUYER OFFER - NO OFFERS..");
+        itemsToBuy.forEach(item -> log.debug("BUYER OFFER - {}", item));
     }
 
     public void logMyItems() {
-        if (myItems.isEmpty()) LOGGER.debug("BUYER MY ITEMS - NO ITEMS..");
-        myItems.forEach(item -> LOGGER.debug("BUYER MY ITEMS - {}", item));
-    }
-
-    public Wallet getWallet() {
-        return wallet;
-    }
-
-    public List<String> getMyItems() {
-        return myItems;
-    }
-
-    public List<Offer> getItemsForSale() {
-        return itemsForSale;
-    }
-
-    public List<Offer> getItemsToBuy() {
-        return itemsToBuy;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
+        if (myItems.isEmpty()) log.debug("BUYER MY ITEMS - NO ITEMS..");
+        myItems.forEach(item -> log.debug("BUYER MY ITEMS - {}", item));
     }
 
     @Override

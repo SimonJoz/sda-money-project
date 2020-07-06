@@ -2,11 +2,15 @@ package com.company.curencyExchange;
 
 import com.company.enums.Currency;
 import com.company.model.Money;
+import lombok.AccessLevel;
+import lombok.Setter;
 
 import java.util.Map;
 
 public class CurrencyExchange {
+    @Setter(AccessLevel.PRIVATE)
     private Converter converter;
+
     private static CurrencyExchange instance;
 
     private CurrencyExchange() {
@@ -36,9 +40,5 @@ public class CurrencyExchange {
 
     private Money convert(Money money) {
         return this.converter.convert(money);
-    }
-
-    private void setConverter(Converter converter) {
-        this.converter = converter;
     }
 }

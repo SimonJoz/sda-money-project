@@ -1,7 +1,11 @@
 package com.company.enums;
 
 import com.company.exceptions.NoSuchMatcherException;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public enum MatcherType {
     FIRST_EXACT_PRICE(0, "MATCH WITH EXACT OFFER"),
     ANY_HIGHEST_PRICE(1, "HIGHEST PRICE IN ANY CURRENCY"),
@@ -12,23 +16,10 @@ public enum MatcherType {
     private final int id;
     private final String description;
 
-    MatcherType(int id, String description) {
-        this.id = id;
-        this.description = description;
-    }
-
     public static MatcherType getMatcherTypeById(int id) throws NoSuchMatcherException {
         if (id >= MatcherType.values().length) {
             throw new NoSuchMatcherException();
         }
         return MatcherType.values()[id];
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

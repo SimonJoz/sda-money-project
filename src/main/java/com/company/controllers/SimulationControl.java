@@ -7,20 +7,17 @@ import com.company.model.Money;
 import com.company.model.Offer;
 import com.company.model.Person;
 import com.company.model.Simulation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
+@RequiredArgsConstructor
 class SimulationControl {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimulationControl.class);
     private final Simulation simulation;
-
-    public SimulationControl(Simulation simulation) {
-        this.simulation = simulation;
-    }
 
     public void simulation() throws InterruptedException {
         simulatePossibleTransactions();
@@ -43,10 +40,10 @@ class SimulationControl {
         System.out.printf("%40sADDING SALE OFFER SIMULATION%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person seller = simulation.getRandomPerson("SELLER");
         seller.logItemsForSale();
-        LOGGER.info("GENERATING SELL OFFER");
+        log.info("GENERATING SELL OFFER");
         simulation.generateUniqueRandomOffers(seller.getItemsForSale(), 1);
         seller.logItemsForSale();
-        LOGGER.info("COMPLETED !\n");
+        log.info("COMPLETED !\n");
 
 
     }
@@ -55,16 +52,16 @@ class SimulationControl {
         System.out.printf("%40sADDING BUY OFFER SIMULATION%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person buyer = simulation.getRandomPerson("BUYER");
         buyer.logItemsToBuy();
-        LOGGER.info("GENERATING BUY OFFER");
+        log.info("GENERATING BUY OFFER");
         simulation.generateUniqueRandomOffers(buyer.getItemsToBuy(), 1);
         buyer.logItemsToBuy();
-        LOGGER.info("COMPLETED !\n");
+        log.info("COMPLETED !\n");
     }
 
     void topUpSimulation() {
         System.out.printf("%40sWALLET TOP UP SIMULATION%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         simulation.simulateWalletTopUp();
-        LOGGER.info("TOP UP COMPLETED !\n");
+        log.info("TOP UP COMPLETED !\n");
     }
 
     void randomTransaction() {
@@ -76,7 +73,7 @@ class SimulationControl {
         seller.logItemsForSale();
         buyer.logItemsToBuy();
         Offer randomOffer = simulation.getRandomItemToBuy(buyer.getItemsToBuy());
-        buyer.buy(seller, randomOffer.getName(), currency, type);
+        buyer.buy(seller, randomOffer.getItemName(), currency, type);
     }
 
 
@@ -90,7 +87,7 @@ class SimulationControl {
         System.out.printf("%40sVALID TRANSACTION SIMULATION EXAMPLE%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person buyer = simulation.generatePersonWithEmptyWallet("BUYER");
         Person seller = simulation.generatePersonWithEmptyWallet("SELLER");
-        LOGGER.info("GENERATING ITEMS");
+        log.info("GENERATING ITEMS");
         Offer offer = simulation.getRandomOffer();
         buyer.addItemToBuy(offer);
         seller.addItemForSale(offer);
@@ -99,14 +96,14 @@ class SimulationControl {
         buyer.receiveMoney(new Money(10000, currency));
         seller.logItemsForSale();
         buyer.logItemsToBuy();
-        buyer.buy(seller, offer.getName(), currency, matcherType);
+        buyer.buy(seller, offer.getItemName(), currency, matcherType);
     }
 
     private void notEnoughMoney() {
         System.out.printf("%40sNOT ENOUGH MONEY SIMULATION EXAMPLE%s\n", MyColor.BLUE_BOLD, MyColor.RESET);
         Person buyer = simulation.generatePersonWithEmptyWallet("BUYER");
         Person seller = simulation.generatePersonWithEmptyWallet("SELLER");
-        LOGGER.info("GENERATING ITEMS");
+        log.info("GENERATING ITEMS");
         Offer offer = simulation.getRandomOffer();
         buyer.addItemToBuy(offer);
         seller.addItemForSale(offer);
@@ -114,7 +111,7 @@ class SimulationControl {
         buyer.logItemsToBuy();
         Currency currency = simulation.chooseCurrency();
         MatcherType matcherType = simulation.chooseMatcherType();
-        buyer.buy(seller, offer.getName(), currency, matcherType);
+        buyer.buy(seller, offer.getItemName(), currency, matcherType);
     }
 
     private void itemNotFound() {
@@ -127,7 +124,7 @@ class SimulationControl {
         buyer.logItemsToBuy();
         MatcherType matcherType = simulation.chooseMatcherType();
         Currency currency = simulation.chooseCurrency();
-        buyer.buy(seller, offer.getName(), currency, matcherType);
+        buyer.buy(seller, offer.getItemName(), currency, matcherType);
     }
 
 

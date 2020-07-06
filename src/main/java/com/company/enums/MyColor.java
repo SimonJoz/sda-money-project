@@ -1,5 +1,8 @@
 package com.company.enums;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum MyColor {
     RESET("\033[0m"),
     YELLOW_BOLD("\033[1;33m"),
@@ -8,10 +11,6 @@ public enum MyColor {
     CYAN_BOLD("\033[1;36m");
 
     private final String code;
-
-    MyColor(String code) {
-        this.code = code;
-    }
 
     @Override
     public String toString() {

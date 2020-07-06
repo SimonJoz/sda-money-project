@@ -3,14 +3,16 @@ package com.company.model;
 import com.company.enums.Currency;
 import com.company.exceptions.IncorrectAmountException;
 import com.company.exceptions.NotEnoughMoneyException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
+@Slf4j
+@Getter
+@EqualsAndHashCode
 public class Money implements Comparable<Money> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Money.class);
     private BigDecimal amount;
     private final Currency currency;
 
@@ -30,7 +32,7 @@ public class Money implements Comparable<Money> {
 
     public void moneyIn(Money money) {
         amount = amount.add(money.amount);
-        LOGGER.debug("AMOUNT AFTER MONEY IN - {}.", amount);
+        log.debug("AMOUNT AFTER MONEY IN - {}.", amount);
     }
 
     public void moneyOut(Money money) throws NotEnoughMoneyException {
@@ -38,12 +40,12 @@ public class Money implements Comparable<Money> {
             throw new NotEnoughMoneyException();
         }
         amount = amount.subtract(money.amount);
-        LOGGER.debug("AMOUNT AFTER MONEY OUT -- {}", amount);
+        log.debug("AMOUNT AFTER MONEY OUT -- {}", amount);
     }
 
     private void amountValidator(BigDecimal value) {
         if (value.compareTo(BigDecimal.ZERO) < 0) {
-            LOGGER.error("NEGATIVE VALUE OF MONEY AMOUNT.");
+            log.error("NEGATIVE VALUE OF MONEY AMOUNT.");
             throw new IncorrectAmountException();
         }
     }
@@ -62,28 +64,6 @@ public class Money implements Comparable<Money> {
             return 0;
         }
         return -1;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Money money = (Money) o;
-        return Objects.equals(amount, money.amount) &&
-                currency == money.currency;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(amount, currency);
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public Currency getCurrency() {
-        return currency;
     }
 }
 

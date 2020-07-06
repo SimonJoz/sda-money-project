@@ -9,6 +9,7 @@ import com.company.exceptions.NoSuchMatcherException;
 import com.company.model.Money;
 import com.company.model.Offer;
 import com.company.model.Person;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -136,6 +137,7 @@ class CLIControl {
         return choice;
     }
 
+    @RequiredArgsConstructor
     private enum Options {
         BUY(0, "BUY ITEM."),
         GIVE_MONEY(1, "DONATE MONEY."),
@@ -151,11 +153,6 @@ class CLIControl {
 
         private final int id;
         private final String desc;
-
-        Options(int id, String desc) {
-            this.id = id;
-            this.desc = desc;
-        }
 
         public static Options getOption(int id) {
             if (id >= Options.values().length) {
